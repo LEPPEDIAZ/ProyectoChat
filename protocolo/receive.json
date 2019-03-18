@@ -1,0 +1,9 @@
+{
+    "signalsocket": "mensaje_recibido",
+    "code": "201",
+    "data": {
+      "from": "username",
+      "message": "string"
+    }
+   }
+   

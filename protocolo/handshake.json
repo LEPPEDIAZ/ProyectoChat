@@ -1,0 +1,12 @@
+{
+  "code": "200",
+  "signalsocket": "usuario_desconectado",
+  "data": {
+    "user":{
+      "id": "number",
+      "username": "string",
+      "status": "0"
+    }
+  }
+}
+   

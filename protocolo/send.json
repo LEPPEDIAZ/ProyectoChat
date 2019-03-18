@@ -1,0 +1,11 @@
+{
+  "signalsocket": "mensaje_enviado",
+  "code": "1",
+  "data": {
+    "to": "List<id>",
+    "message": "string",
+    "file_type": "? string"
+  }
+ }
+ 
+   

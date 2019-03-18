@@ -1,0 +1,13 @@
+{
+  "status": "0",
+  "code": "200",
+  "data": {
+    "user":{
+      "id": "number",
+      "username": "string",
+      "status": "0"
+    }
+  }
+ }
+ 
+   
