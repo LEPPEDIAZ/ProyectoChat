@@ -4,9 +4,24 @@
 #include <stdlib.h> 
 #include <string.h> 
 #include <sys/socket.h> 
+#include "cJSON/cJSON.c"
+#include <time.h>
+#include <sys/types.h>
 #define MAX 80 
 #define PORT 8080 
 #define SA struct sockaddr 
+char usuario[256];
+
+struct user
+{
+    char username[100];
+    char id[25];
+    char status[100];
+    char last_connected[100];
+}
+
+struct user usuario
+
 void func(int sockfd) 
 { 
     char buff[MAX]; 

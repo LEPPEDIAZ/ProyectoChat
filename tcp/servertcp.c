@@ -3,10 +3,22 @@
 #include <stdlib.h> 
 #include <string.h> 
 #include <sys/socket.h> 
-#include <sys/types.h> 
+#include <sys/types.h>
+#include "cJSON/cJSON.c" 
 #define MAX 80 
 #define PORT 8080 
 #define SA struct sockaddr 
+
+char *createUserJson(char *id, char *name, char *status);
+
+struct user
+{
+    char username[100];
+    char id[25];
+    char status[100];
+    char last_connected[100];
+    int file;
+};
   
 // Function designed for chat between client and server. 
 void func(int sockfd) 
@@ -41,6 +53,7 @@ void func(int sockfd)
 // Driver function 
 int main() 
 { 
+    
     int sockfd, connfd, len; 
     struct sockaddr_in servaddr, cli; 
   
@@ -91,4 +104,36 @@ int main()
     // After chatting close the socket 
     close(sockfd); 
 } 
+char *createUserJson(char *id, char *username, char *status)
+
+{
+    //char userText [1000];
+    char *usernametext = "\n\t\"username\": \"";
+    char *idtext = "{\"id\": \"";
+    char *statustext = "\n\t\"status\": \"";
+    char *endtext = "}";
+    char *coma = ",";
+    char *comilla = "\"";
+    char text[1000];
+    strcpy(text, idtext);
+    strcat(text, id);
+    strcat(text, comilla);
+    strcat(text, coma);
+    strcat(text, usernametext);
+    strcat(text, username);
+    strcat(text, comilla);
+    strcat(text, coma);
+    strcat(text, statustext);
+    strcat(text, status);
+    strcat(text, comilla);
+    strcat(text, endtext);
+    fflush(stdout);
+    FILE *f;
+    f = fopen("info.txt", "a");
+    fputs(text, f);
+    fclose(f);
+
+    return text;
+
+}
 
