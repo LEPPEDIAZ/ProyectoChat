@@ -3,5 +3,5 @@
 
 int main(){
     std::cout << build_request_connection_json("prueba")<< endl;
-
+	tester("funciona");
 }

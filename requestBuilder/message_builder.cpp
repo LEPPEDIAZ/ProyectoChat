@@ -1,6 +1,9 @@
-#include "../include/nlohmann/json.hpp"
+#include "../jsonLib/json.hpp"
 #include <string>
-
+#include <vector>
+#include <iostream>
+using namespace std;
+using json = nlohmann::json;
 /**
  * genera un json para hacer una solicitud de conexion
  *
@@ -22,7 +25,7 @@ string build_request_connection_json(string username) {
  * @param string file_type: formato de mensaje a enviar
  * @return string: JSON del request
  */
-string build_send_message_json(int destinatarios[], string message, string file_type) {
+string build_send_message_json(vector<int> destinatarios, string message, string file_type) {
     json j;
     j["code"] = 1;
     j["data"]["to"] = destinatarios;
@@ -37,7 +40,7 @@ string build_send_message_json(int destinatarios[], string message, string file_
  * @param int id[]: stack ID del usuario
  * @return string: JSON del request
  */
-string build_get_user_json(int id[]) {
+string build_get_user_json(vector<int> id) {
     json j;
     j["code"] = 3;
     j["data"]["user"] = id;
@@ -78,4 +81,10 @@ string build_error_json(int origin, string error_message) {
     j["code"] = 500 + origin;
     j["data"]["error_message"] = error_message;
     return j.dump();
+}
+
+string tester(string data){
+	json j;
+	j["data"] = data;
+	cout<<j["data"];
 }
