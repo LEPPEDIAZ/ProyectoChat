@@ -2,6 +2,8 @@
 #include <iostream>
 
 int main(){
-    std::cout << build_request_connection_json("prueba")<< endl;
-	tester("funciona");
+    Mensaje respuesta = new Mensaje(1);
+    respuesta.build_success_json("conexión exitosa");
+
+    std::cout << respuesta.to_string()<< endl;
 }
