@@ -66,7 +66,6 @@ public:
      * @param success_message
      */
     void build_success_json(string success_message) {
-        j["code"] = j["code"]+200;
         j["data"]["success_message"] = success_message;
     }
 
@@ -77,7 +76,6 @@ public:
      * @param string origin : ID del request que causo el error
      */
     void build_error_json( string error_message) {
-        j["code"] = j["code"]+500;
         j["data"]["error_message"] = error_message;
     }
 
