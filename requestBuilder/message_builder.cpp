@@ -75,10 +75,16 @@ public:
      * @param string error_message: mensaje de error
      * @param string origin : ID del request que causo el error
      */
-    void build_error_json( string error_message) {
+    void build_error_json(string error_message) {
         j["data"]["error_message"] = error_message;
     }
 
+    void build_connection_success_json(int user_id,sting username, int status){
+        j["data"]["id"] = user_id;
+        j["data"]["username"] = username;
+        j["data"]["status"] = status;
+
+    }
     /**
      * convierte el json a un string en formato
      *
