@@ -34,8 +34,8 @@ int main(int argc, char *argv[]) {
     sockaddr_in sendSockAddr;
     Mensaje respuesta = new Mensaje(1);
     string username;
-    username>>std::cin;
-    respuesta.build_connection_success_json(1,username,1);
+    getline(cin, username);
+    respuesta.build_connection_success_json(1, username, 1);
     std::cout << respuesta.to_string() << endl;
     bzero((char *) &sendSockAddr, sizeof(sendSockAddr));
     bzero((char *) &respuesta, sizeof(respuesta));
