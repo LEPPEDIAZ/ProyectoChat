@@ -84,7 +84,7 @@ private:
      */
     int get_next_empty_user_index() {
         int index = 0;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
             if (userList->get_user_is_active()) {
                 return i;
             }
@@ -142,7 +142,7 @@ public:
      */
     int search_user_by_username(string username) {
         int index = 0;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
             if (userList[i].get_username() == username) {
                 return i;
             }
@@ -157,7 +157,7 @@ public:
      */
     vector<int> get_recommended_timeouts() {
         vector<int> response;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
             if (userList[i].get_last_acction_diff() > 300) {
                 response.push_back(i);
             }
@@ -170,7 +170,7 @@ public:
      */
     void update_all_user_timestamps() {
         unsigned long int curr_time = time(NULL);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
             userList[i].get_last_connected(curr_time);
         }
     }
