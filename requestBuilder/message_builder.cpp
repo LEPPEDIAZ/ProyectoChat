@@ -79,7 +79,7 @@ public:
         j["data"]["error_message"] = error_message;
     }
 
-    void build_connection_success_json(int user_id,sting username, int status){
+    void build_connection_success_json(int user_id,string username, int status){
         j["data"]["id"] = user_id;
         j["data"]["username"] = username;
         j["data"]["status"] = status;
