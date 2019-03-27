@@ -14,11 +14,15 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <fstream>
+#include "requestBuilder/message_builder.cpp"
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-
+    int sockfd, newsockfd, portno;
+    socklen_t clilen;
+    struct sockaddr_in serv_addr, cli_addr;
+    int n;
     if (argc != 2) {
         cerr << "Usage: port" << endl;
         exit(0);
@@ -34,15 +38,16 @@ int main(int argc, char *argv[]) {
     servAddr.sin_family = AF_INET;
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servAddr.sin_port = htons(port);
+    
 
 
-    int serverSd = socket(AF_INET, SOCK_STREAM, 0);
-    if (serverSd < 0) {
+    int sockSd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockSd < 0) {
         cerr << "Error " << endl;
         exit(0);
     }
 
-    int bindStatus = bind(serverSd, (struct sockaddr *) &servAddr,
+    int bindStatus = bind(sockSd, (struct sockaddr *) &servAddr,
                           sizeof(servAddr));
     if (bindStatus < 0) {
         cerr << "Error " << endl;
@@ -50,17 +55,20 @@ int main(int argc, char *argv[]) {
     }
     cout << "Esperando que el cliente se conecte..." << endl;
 
-    listen(serverSd, 5);
+    listen(sockSd, 5);
+
 
     sockaddr_in newSockAddr;
     socklen_t newSockAddrSize = sizeof(newSockAddr);
 
-    int newSd = accept(serverSd, (sockaddr *) &newSockAddr, &newSockAddrSize);
+    int newSd = accept(sockSd, (sockaddr *) &newSockAddr, &newSockAddrSize);
     if (newSd < 0) {
         cerr << "Error aceptando el request del client" << endl;
         exit(1);
     }
+
     cout << "Cliente conectado!" << endl;
+    
     //creat
 
     struct timeval start1, end1;
@@ -70,6 +78,10 @@ int main(int argc, char *argv[]) {
     while (1) {
 
         cout << "Esperando respuesta del cliente..." << endl;
+	Mensaje respuesta = new Mensaje(1);
+	respuesta.success_connection_json(200, 2, "hola", 0);
+	std::cout << respuesta.to_string() << endl;
+	
         memset(&msg, 0, sizeof(msg));
         bytesRead += recv(newSd, (char *) &msg, sizeof(msg), 0);
         if (!strcmp(msg, "exit")) {
@@ -93,7 +105,7 @@ int main(int argc, char *argv[]) {
 
     gettimeofday(&end1, NULL);
     close(newSd);
-    close(serverSd);
+    close(sockSd);
     cout << "********Session********" << endl;
     cout << "Bytes escritos: " << bytesWritten << " Bytes leidos: " << bytesRead << endl;
     cout << " Tiempo transcurrido: " << (end1.tv_sec - start1.tv_sec)

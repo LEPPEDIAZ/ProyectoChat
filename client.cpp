@@ -15,10 +15,14 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
 
+
 int main(int argc, char *argv[]) {
+    time_t _tm= time(NULL );
+    struct tm * curtime = localtime( &_tm);
     //se determina el ip y el numero de puerto
     if (argc != 3) {
         cerr << "Usage: ip_address port" << endl;
@@ -35,7 +39,7 @@ int main(int argc, char *argv[]) {
     Mensaje respuesta = new Mensaje(1);
     string username;
     getline(cin, username);
-    respuesta.build_connection_success_json(1, username, 1);
+    respuesta.build_connection_success_json(1, username, 1, "7 de la noche");
     std::cout << respuesta.to_string() << endl;
     bzero((char *) &sendSockAddr, sizeof(sendSockAddr));
     bzero((char *) &respuesta, sizeof(respuesta));
