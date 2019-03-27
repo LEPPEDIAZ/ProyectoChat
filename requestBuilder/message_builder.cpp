@@ -7,7 +7,8 @@
 
 using namespace std;
 using json = nlohmann::json;
-
+time_t _tm= time(NULL );
+struct tm * curtime = localtime( &_tm);
 class Mensaje {
 private:
     json j;
@@ -81,11 +82,45 @@ public:
         j["data"]["error_message"] = error_message;
     }
 
-    void build_connection_success_json(int user_id, string username, int status) {
-        j["data"]["id"] = user_id;
-        j["data"]["username"] = username;
-        j["data"]["status"] = status;
-
+    void build_connection_success_json(int user_id, string username, int status, string last_connected) {
+        j["user"]["id"] = user_id;
+        j["user"]["username"] = username;
+        j["user"]["status"] = status;
+	j["user"]["last_connected"] = last_connected;
+    }
+/** request connection */
+    void request_connection_json(int code, string username) {
+        j["code"] = code;
+        j["user"]["username"] = username;
+	
+    }
+/*success */ 
+    void success_connection_json(int code, int user_id, string username, int status) {
+        j["code"] = code;
+	j["data"]["user"]["id"] = user_id;
+        j["data"]["user"]["username"] = username;
+        j["data"]["user"]["status"] = status;
+    }
+//*error *//
+    void error_connection_json(int code, string error_message) {
+        j["code"] = code;
+	j["data"]["error_message"] = error_message;
+        ;
+    }
+//* send *//
+//* receive *//
+    void receive_message_json(int code,  string username, string message) {
+        j["code"] = code;
+	j["data"]["from"] = username;
+        j["data"]["message"] = message;
+       
+    }
+//* change status *//
+    void change_status_json(int code, int user_id, int new_status) {
+        j["code"] = code;
+	j["data"]["user"] = user_id;
+        j["data"]["new_status"] = new_status;
+       
     }
 
     /**
