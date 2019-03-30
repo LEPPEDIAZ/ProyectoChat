@@ -164,15 +164,22 @@ public:
         }
         return response;
     }
+};
 
-    /**
-     * al llamar este metodo, se actualizara el timestamp de conexion a  todos los users dentro del userstack
-     */
-    void update_all_user_timestamps() {
-        unsigned long int curr_time = time(NULL);
-        for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
-            userList[i].get_last_connected(curr_time);
+class User_Thread {
+private:
+    pthread_t user_send_thread;
+    pthread_t user_fetch_thread;
+public:
+    int User_Thread() {
+        if (pthread_create(&user_fetch_thread, NULL, inc_x, &x)) {
+
+            fprintf(stderr, "Error creating thread\n");
+            return 1;
+
         }
     }
 
 };
+
+

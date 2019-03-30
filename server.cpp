@@ -22,34 +22,30 @@ using namespace std;
 string z[10];
 
 
-void SocketSend(int hSocket, char mensaje, short lenRqst)
-{
-	int shortRetval = -1;
-	struct timeval tv;
-	tv.tv_sec = 20;
-	tv.tv_usec = 0;
-	if (setsockopt(hSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(tv)) < 0)
-	{
-		return -1;
-	}
-	shortRetval = send(hSocket , mensaje, lenRqst, 0);
-	
-	return shortRetval;
+void SocketSend(int hSocket, char mensaje, short lenRqst) {
+    int shortRetval = -1;
+    struct timeval tv;
+    tv.tv_sec = 20;
+    tv.tv_usec = 0;
+    if (setsockopt(hSocket, SOL_SOCKET, SO_SNDTIMEO, (char *) &tv, sizeof(tv)) < 0) {
+        return -1;
+    }
+    shortRetval = send(hSocket, mensaje, lenRqst, 0);
+
+    return shortRetval;
 }
 
-int SocketReceive (int hSocket, char* Rsp, short RvcSize)
-{
-	int shortRetval = -1;
-	struct timeval tv;
-	tv.tv_sec = 20;
-	tv.tv_usec = 0;
-	if (setsockopt(hSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(tv)) < 0)
-	{
-		return -1;
-	}
-	shortRetval = recv(hSocket , Rsp, RvcSize, 0);
-	
-	return shortRetval;
+int SocketReceive(int hSocket, char *Rsp, short RvcSize) {
+    int shortRetval = -1;
+    struct timeval tv;
+    tv.tv_sec = 20;
+    tv.tv_usec = 0;
+    if (setsockopt(hSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &tv, sizeof(tv)) < 0) {
+        return -1;
+    }
+    shortRetval = recv(hSocket, Rsp, RvcSize, 0);
+
+    return shortRetval;
 }
 
 
@@ -74,7 +70,6 @@ int main(int argc, char *argv[]) {
     servAddr.sin_family = AF_INET;
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servAddr.sin_port = htons(port);
-    
 
 
     int sockSd = socket(AF_INET, SOCK_STREAM, 0);
@@ -92,7 +87,7 @@ int main(int argc, char *argv[]) {
     cout << "Esperando que el cliente se conecte..." << endl;
 
     listen(sockSd, 5);
-     
+
     sockaddr_in newSockAddr;
 //* La llamada acepta la conexion *//
     socklen_t newSockAddrSize = sizeof(newSockAddr);
@@ -104,7 +99,7 @@ int main(int argc, char *argv[]) {
     }
 
     cout << "Cliente conectado!" << endl;
-    
+
     //creat
 
     struct timeval start1, end1;
@@ -114,24 +109,23 @@ int main(int argc, char *argv[]) {
     while (1) {
 
         cout << "Esperando respuesta del cliente..." << endl;
-	Mensaje respuesta = new Mensaje(1);
-	respuesta.success_connection_json(200, 2, "hola", 0);
-	std::cout << respuesta.to_string() << endl;
-	string response = respuesta.to_string();
-	std :: string str = response;
-	const char *convert = str.c_str();
-	// recibir mensaje
-	if (recv (sockSd, *convert, 200, 0) < 0)
-	{
-	break;
-	}
-	printf ("Respuesta del client : %s\n", *convert);
-	//ocketSend (sockSd, response, strlen(response));
+        Mensaje respuesta = new Mensaje(1);
+        respuesta.success_connection_json(200, 2, "hola", 0);
+        std::cout << respuesta.to_string() << endl;
+        string response = respuesta.to_string();
+        std::string str = response;
+        const char *convert = str.c_str();
+        // recibir mensaje
+        if (recv(sockSd, *convert, 200, 0) < 0) {
+            break;
+        }
+        printf("Respuesta del client : %s\n", *convert);
+        //ocketSend (sockSd, response, strlen(response));
         //mandar mensaje
-	
-	
 
-       
+
+
+
     }
 
     gettimeofday(&end1, NULL);
