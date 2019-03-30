@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <fstream>
 #include "requestBuilder/message_builder.cpp"
+#include <boost/asio.hpp>
 
 using namespace std;
 
@@ -56,12 +57,12 @@ int main(int argc, char *argv[]) {
     cout << "Esperando que el cliente se conecte..." << endl;
 
     listen(sockSd, 5);
-
-
+     
     sockaddr_in newSockAddr;
+//* La llamada acepta la conexion *//
     socklen_t newSockAddrSize = sizeof(newSockAddr);
 
-    int newSd = accept(sockSd, (sockaddr *) &newSockAddr, &newSockAddrSize);
+    int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
     if (newSd < 0) {
         cerr << "Error aceptando el request del client" << endl;
         exit(1);
@@ -82,34 +83,15 @@ int main(int argc, char *argv[]) {
 	respuesta.success_connection_json(200, 2, "hola", 0);
 	std::cout << respuesta.to_string() << endl;
 	
-        memset(&msg, 0, sizeof(msg));
-        bytesRead += recv(newSd, (char *) &msg, sizeof(msg), 0);
-        if (!strcmp(msg, "exit")) {
-            cout << "Client se a salido" << endl;
-            break;
-        }
-        cout << "Client: " << msg << endl;
-        cout << ">";
-        string data;
-        getline(cin, data);
-        memset(&msg, 0, sizeof(msg));
-        strcpy(msg, data.c_str());
-        if (data == "exit") {
+	
+        
 
-            send(newSd, (char *) &msg, strlen(msg), 0);
-            break;
-        }
-
-        bytesWritten += send(newSd, (char *) &msg, strlen(msg), 0);
+       
     }
 
     gettimeofday(&end1, NULL);
     close(newSd);
     close(sockSd);
     cout << "********Session********" << endl;
-    cout << "Bytes escritos: " << bytesWritten << " Bytes leidos: " << bytesRead << endl;
-    cout << " Tiempo transcurrido: " << (end1.tv_sec - start1.tv_sec)
-         << " secs" << endl;
-    cout << "Saliendo de conexion..." << endl;
     return 0;
 }
