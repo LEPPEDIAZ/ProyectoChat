@@ -19,8 +19,10 @@
 #include <unistd.h>
 
 using namespace std;
+string z[10];
 
-int SocketSend(int hSocket, char* Rqst, short lenRqst)
+
+void SocketSend(int hSocket, char mensaje, short lenRqst)
 {
 	int shortRetval = -1;
 	struct timeval tv;
@@ -30,7 +32,7 @@ int SocketSend(int hSocket, char* Rqst, short lenRqst)
 	{
 		return -1;
 	}
-	shortRetval = send(hSocket , Rqst, lenRqst, 0);
+	shortRetval = send(hSocket , mensaje, lenRqst, 0);
 	
 	return shortRetval;
 }
@@ -55,6 +57,7 @@ int main(int argc, char *argv[]) {
     int sockfd, newsockfd, portno;
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
+    char client_message[200] = {0};
     int n;
     if (argc != 2) {
         cerr << "Usage: port" << endl;
@@ -114,9 +117,19 @@ int main(int argc, char *argv[]) {
 	Mensaje respuesta = new Mensaje(1);
 	respuesta.success_connection_json(200, 2, "hola", 0);
 	std::cout << respuesta.to_string() << endl;
+	string response = respuesta.to_string();
+	std :: string str = response;
+	const char *convert = str.c_str();
+	// recibir mensaje
+	if (recv (sockSd, *convert, 200, 0) < 0)
+	{
+	break;
+	}
+	printf ("Respuesta del client : %s\n", *convert);
+	//ocketSend (sockSd, response, strlen(response));
+        //mandar mensaje
 	
 	
-        
 
        
     }
