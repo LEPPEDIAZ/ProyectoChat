@@ -7,7 +7,7 @@ using namespace std;
 
 void enviar_mensaje(string mensaje, int socket) {
     int message_len_bytes = mensaje.length();
-    send(socket, mensaje, message_len_bytes, 0);
+    send(socket,& mensaje, message_len_bytes, 0);
 
 }
 
