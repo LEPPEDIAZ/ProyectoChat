@@ -46,7 +46,7 @@ public:
     }
 
     int get_last_connected() {
-        return _last_connected;
+        return _last_action_timestamp;
     }
 
     void set_last_connected(int last_connected) {
@@ -100,7 +100,7 @@ private:
      */
     int get_last_acction_diff(int userIndex) {
         unsigned long int curr_time = time(NULL);
-        return userList[userIndex].get_last_connected() - _last_action_timestamp;
+        return curr_time - userList[userIndex].set_last_connected();
     }
 
 public:
