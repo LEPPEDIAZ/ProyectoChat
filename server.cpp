@@ -16,6 +16,7 @@
 #include <fstream>
 #include "requestBuilder/message_builder.cpp"
 #include "Users/user_classes.cpp"
+#include "comunicacion/transfer_functions.cpp"
 #include <arpa/inet.h>
 #include <unistd.h>
 
@@ -24,33 +25,6 @@ using namespace std;
 
 User_Manager users[5];
 string z[10];
-
-
-void SocketSend(int hSocket, char mensaje, short lenRqst) {
-    int shortRetval = -1;
-    struct timeval tv;
-    tv.tv_sec = 20;
-    tv.tv_usec = 0;
-    if (setsockopt(hSocket, SOL_SOCKET, SO_SNDTIMEO, (char *) &tv, sizeof(tv)) < 0) {
-        return -1;
-    }
-    shortRetval = send(hSocket, mensaje, lenRqst, 0);
-
-    return shortRetval;
-}
-
-int SocketReceive(int hSocket, char *Rsp, short RvcSize) {
-    int shortRetval = -1;
-    struct timeval tv;
-    tv.tv_sec = 20;
-    tv.tv_usec = 0;
-    if (setsockopt(hSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &tv, sizeof(tv)) < 0) {
-        return -1;
-    }
-    shortRetval = recv(hSocket, Rsp, RvcSize, 0);
-
-    return shortRetval;
-}
 
 
 int main(int argc, char *argv[]) {
