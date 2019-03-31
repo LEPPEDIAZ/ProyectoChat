@@ -119,7 +119,6 @@ public:
         if (next_index == -1) {
             return -1;
         }
-        userList[next_index] = new User(username, status, last_connected);
         userList[next_index].set_user_is_active(true);
         userList[next_index].set_username(username);
         userList[next_index].set_user_status(status);
