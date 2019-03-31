@@ -16,16 +16,15 @@
 #include <fstream>
 #include "requestBuilder/message_builder.cpp"
 #include "Users/user_classes.cpp"
+#include "comunicacion/port_io_manager.cpp"
 #include "comunicacion/transfer_functions.cpp"
 #include <arpa/inet.h>
 #include <unistd.h>
 
+#define MAX_USERS_CONNECTED 5
 using namespace std;
 
-
-User_Manager users[5];
-string z[10];
-
+User_Manager users[MAX_USERS_CONNECTED];
 
 int main(int argc, char *argv[]) {
     int sockfd, newsockfd, portno;
@@ -64,9 +63,10 @@ int main(int argc, char *argv[]) {
     }
     cout << "Esperando que el cliente se conecte..." << endl;
 
-    listen(sockSd, 5);
+    listen(sockSd, MAX_USERS_CONNECTED);
 
     sockaddr_in newSockAddr;
+
 //* La llamada acepta la conexion *//
     socklen_t newSockAddrSize = sizeof(newSockAddr);
 
@@ -87,19 +87,17 @@ int main(int argc, char *argv[]) {
     while (1) {
 
         cout << "Esperando respuesta del cliente..." << endl;
-        Mensaje respuesta = new Mensaje(1);
-        respuesta.success_connection_json(200, 2, "hola", 0);
-        std::cout << respuesta.to_string() << endl;
-        string response = respuesta.to_string();
-        std::string str = response;
-        const char *convert = str.c_str();
-        // recibir mensaje
-        if (recv(sockSd, *convert, 200, 0) < 0) {
-            break;
+
+
+//        Mensaje respuesta = new Mensaje(1);
+//        respuesta.success_connection_json(200, 2, "hola", 0);
+//        std::cout << respuesta.to_string() << endl;
+
+        if(is_message_waiting(sockSd)){
+            printf("hay un mensaje en cola!");
+            string mensaje = recibir_mensaje(sockSd);
+            printf("Mensaje: %s",mensaje);
         }
-        printf("Respuesta del client : %s\n", *convert);
-        //ocketSend (sockSd, response, strlen(response));
-        //mandar mensaje
 
 
 

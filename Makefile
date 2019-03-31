@@ -7,4 +7,4 @@ TARGET = dev_message_tester
 all:$(TARGET)
 
 $(TARGET):
-	g++ $(TARGET).cpp -std=c++11 -fpermissive 
+	g++ $(TARGET).cpp -std=c++11 -fpermissive  -w
