@@ -19,6 +19,8 @@
 
 using namespace std;
 
+string z[10];
+
 
 int main(int argc, char *argv[]) {
     time_t _tm= time(NULL );
@@ -36,6 +38,7 @@ int main(int argc, char *argv[]) {
     struct hostent *host = gethostbyname(serverIp);
     //IP socket adress 
     sockaddr_in sendSockAddr;
+    cout << "Ingrese el Usuario:  " << endl;
     Mensaje respuesta = new Mensaje(1);
     string username;
     getline(cin, username);
@@ -56,7 +59,7 @@ int main(int argc, char *argv[]) {
     if (status < 0) {
         respuesta.build_error_json("error al conectarse");
     }
-    cout << "Connected to the server!" << endl;
+    
     respuesta.build_success_json("Server Connection successfull");
     int bytesRead, bytesWritten = 0;
     struct timeval start1, end1;
@@ -65,29 +68,23 @@ int main(int argc, char *argv[]) {
         cout << ">";
         string data;
         getline(cin, data);
-        memset(&msg, 0, sizeof(msg));//clear the buffer
         strcpy(msg, data.c_str());
+	Mensaje receive = new Mensaje(1);
+    	receive.receive_message_json(1, username, data);
+	std::cout << receive.to_string() << endl;
+	
+	
+	
         if (data == "exit") {
             send(clientSd, (char *) &msg, strlen(msg), 0);
             break;
         }
-        bytesWritten += send(clientSd, (char *) &msg, strlen(msg), 0);
         cout << "Esperando respuesta del server..." << endl;
-        memset(&msg, 0, sizeof(msg));//clear the buffer
-        bytesRead += recv(clientSd, (char *) &msg, sizeof(msg), 0);
-        if (!strcmp(msg, "exit")) {
-            cout << "Server has quit the session" << endl;
-            break;
-        }
-        cout << "Server: " << msg << endl;
+        
+        cout << username << ":  " << msg << endl;
     }
-    gettimeofday(&end1, NULL);
-    close(clientSd);
+   
     cout << "********Session********" << endl;
-    cout << "Bytes : " << bytesWritten <<
-         " Bytes : " << bytesRead << endl;
-    cout << "Tiempo transcurrido: " << (end1.tv_sec - start1.tv_sec)
-         << " secs" << endl;
-    cout << "Saliendo de conexion..." << endl;
+    
     return 0;
 }

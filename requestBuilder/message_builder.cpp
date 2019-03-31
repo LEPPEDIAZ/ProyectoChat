@@ -108,6 +108,25 @@ public:
         ;
     }
 //* send *//
+	void send_message_json(int code, vector<int> List, string message, string file_type) {
+        j["code"] = code;
+	j["data"]["to"] = List;
+        j["data"]["message"] = message;
+	j["data"]["file_type"] = file_type;
+       
+    }
+//* Receive user *//
+	void recieve_user_json(int code, vector<int> List) {
+        j["code"] = code;
+	j["data"]["users"] = List;
+       
+    }
+//* GET user *//
+	void get_user_json(int code, vector<int> List) {
+        j["code"] = code;
+	j["data"]["user"] = List;
+       
+    }
 //* receive *//
     void receive_message_json(int code,  string username, string message) {
         j["code"] = code;
