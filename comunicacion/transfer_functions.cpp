@@ -15,7 +15,7 @@ string recibir_mensaje(int socket) {
     bzero(buffer, 256);
 
     string response = read(socket, buffer, 255);
-    if (response < 0)
+    if (response.size() < 0)
         return "error al recibir el mensaje";
     return response;
 }
