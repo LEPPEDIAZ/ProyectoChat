@@ -120,6 +120,10 @@ public:
             return -1;
         }
         userList[next_index] = new User(username, status, last_connected);
+        userList[next_index].set_user_is_active(true);
+        userList[next_index].set_username(username);
+        userList[next_index].set_user_status(status);
+        userList[next_index].set_last_connected(last_connected);
         return 0;
     }
 
@@ -158,7 +162,7 @@ public:
     vector<int> get_recommended_timeouts() {
         vector<int> response;
         for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
-            if (userList[i].get_last_acction_diff() > 300) {
+            if (this->get_last_acction_diff(i) > 300) {
                 response.push_back(i);
             }
         }
