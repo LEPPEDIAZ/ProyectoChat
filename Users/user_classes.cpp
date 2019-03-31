@@ -100,10 +100,10 @@ private:
      */
     int get_last_acction_diff(int userIndex) {
         unsigned long int curr_time = time(NULL);
-        return curr_time - userList[userIndex].set_last_connected();
+        return curr_time - userList[userIndex].get_last_connected();
     }
 
-public:
+public: 
 
     /**
      * agrega un usuario al userstack
