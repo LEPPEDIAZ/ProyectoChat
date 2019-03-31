@@ -15,10 +15,14 @@
 #include <fcntl.h>
 #include <fstream>
 #include "requestBuilder/message_builder.cpp"
+#include "Users/user_classes.cpp"
 #include <arpa/inet.h>
 #include <unistd.h>
 
 using namespace std;
+
+
+User_Manager users[5];
 string z[10];
 
 
