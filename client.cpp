@@ -71,6 +71,9 @@ int main(int argc, char *argv[]) {
         strcpy(msg, data.c_str());
 	Mensaje receive = new Mensaje(1);
     	receive.receive_message_json(1, username, data);
+	std::cout << receive.to_string() << endl;
+	
+	
 	
         if (data == "exit") {
             send(clientSd, (char *) &msg, strlen(msg), 0);
