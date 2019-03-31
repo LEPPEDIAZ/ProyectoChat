@@ -94,9 +94,8 @@ int main(int argc, char *argv[]) {
 //        std::cout << respuesta.to_string() << endl;
 
         if(is_message_waiting(sockSd)){
-            printf("hay un mensaje en cola!");
             string mensaje = recibir_mensaje(sockSd);
-            printf("Mensaje: %s",mensaje);
+            printf("Mensaje: %s\n",mensaje);
         }
 
 
