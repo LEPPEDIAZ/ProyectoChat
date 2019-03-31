@@ -22,7 +22,7 @@ public:
     /**
      * void User constructor, inicializa un usuario como inactivo
      */
-    void User() {
+     User() {
         _username = "";
         _status = 1;
         _last_action_timestamp = "";
@@ -30,7 +30,7 @@ public:
 
     }
 
-    void User(string username, int status, int last_connected) {
+     User(string username, int status, int last_connected) {
         _username = username;
         _status = status;
         _last_action_timestamp = last_connected;
