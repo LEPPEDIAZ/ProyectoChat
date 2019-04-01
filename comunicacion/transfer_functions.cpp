@@ -24,7 +24,7 @@ string recibir_mensaje(int socket) {
     int response_len = read(socket, buffer, 256);
 
     if (response_len < 0)
-        return "error";
+        return "3312wazo";
     string mensaje = buffer;
     return mensaje;
 }
