@@ -28,16 +28,3 @@ string recibir_mensaje(int socket) {
     string mensaje = buffer;
     return mensaje;
 }
-string test_auto_io(int sockSd){
-    int m_size = is_message_waiting(sockSd);
-    char buffer[m_size];
-    bzero(buffer, m_size);
-
-    int response_len = read(socket, buffer, m_size);
-
-    if (response_len < 0)
-        return "error al recibir el mensaje";
-    string mensaje = buffer;
-    return mensaje;
-
-}
