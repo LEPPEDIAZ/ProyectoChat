@@ -21,21 +21,23 @@ string recibir_mensaje(int socket) {
     char buffer[256];
     bzero(buffer, 256);
 
-    int response_len = read(socket, buffer, 255);
+    int response_len = read(socket, buffer, 256);
 
     if (response_len < 0)
         return "error al recibir el mensaje";
     string mensaje = buffer;
     return mensaje;
 }
-string recibir_mensaje(int socket, int size){
-    char buffer[size];
-    bzero(buffer, size);
+string test_auto_io(int sockSd){
+    int m_size = is_message_waiting(sockSd);
+    char buffer[m_size];
+    bzero(buffer, m_size);
 
-    int response_len = read(socket, buffer, size);
+    int response_len = read(socket, buffer, m_size);
 
     if (response_len < 0)
         return "error al recibir el mensaje";
     string mensaje = buffer;
     return mensaje;
+
 }
