@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
             cout << "Mensajes: " << mensaje << "\n" << endl;
             auto mensaje_parseado = json::parse(mensaje);
 	    int code = mensaje_parseado["code"];
-            cout << "codigo fue: " <<code;
+            cout << "codigo fue: " <<code<<endl;
 	    cout<<"-----";
         }
 
