@@ -98,8 +98,9 @@ int main(int argc, char *argv[]) {
             printf("hay un mensaje en cola!\n");
             cout << "Mensajes: " << mensaje << "\n" << endl;
             auto mensaje_parseado = json::parse(mensaje);
-            cout << "codigo fue: " << mensaje_parseado["code"];
-
+	    int code = mensaje_parseado["code"];
+            cout << "codigo fue: " <<code;
+	    cout<<"-----";
         }
 
 
