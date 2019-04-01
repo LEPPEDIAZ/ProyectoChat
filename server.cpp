@@ -93,11 +93,11 @@ int main(int argc, char *argv[]) {
 //        respuesta.success_connection_json(200, 2, "hola", 0);
 //        std::cout << respuesta.to_string() << endl;
 
-        if(is_message_waiting(sockSd)){
+        if(is_message_waiting(newSd)){
             printf("hay un mensaje en cola!\n");
             string mensaje = recibir_mensaje(sockSd);
             cout<<"Mensajes: "<<mensaje<<"\n"<<endl;
-            cout<<"test: "<<test_auto_io(sockSd)<<"\n"<<endl;
+            //cout<<"test: "<<test_auto_io(sockSd)<<"\n"<<endl;
         }
 
 
