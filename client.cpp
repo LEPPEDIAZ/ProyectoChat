@@ -79,6 +79,9 @@ int main(int argc, char *argv[]) {
             send(clientSd, (char *) &msg, strlen(msg), 0);
             break;
         }
+
+	send(clientSd, (char *) &msg, strlen(msg), 0);
+
         cout << "Esperando respuesta del server..." << endl;
         
         cout << username << ":  " << msg << endl;
