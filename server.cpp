@@ -95,7 +95,8 @@ int main(int argc, char *argv[]) {
 
         if(is_message_waiting(sockSd)){
             string mensaje = recibir_mensaje(sockSd);
-            printf("Mensaje: %s\n",mensaje);
+            cout<<"Mensaje: "<<mensaje;
+//            printf("Mensaje: %s\n",mensaje);
         }
 
 

@@ -22,6 +22,7 @@ string recibir_mensaje(int socket) {
     bzero(buffer, 256);
 
     int response_len = read(socket, buffer, 255);
+    
     if (response_len < 0)
         return "error al recibir el mensaje";
     string mensaje = buffer;
