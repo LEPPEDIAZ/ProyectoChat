@@ -92,10 +92,9 @@ int main(int argc, char *argv[]) {
 //        Mensaje respuesta = new Mensaje(1);
 //        respuesta.success_connection_json(200, 2, "hola", 0);
 //        std::cout << respuesta.to_string() << endl;
-
-        if(is_message_waiting(newSd)){
+	string mensaje = recibir_mensaje(newSd);
+        if(mensaje!="error"){
             printf("hay un mensaje en cola!\n");
-            string mensaje = recibir_mensaje(newSd);
             cout<<"Mensajes: "<<mensaje<<"\n"<<endl;
             //cout<<"test: "<<test_auto_io(newSd)<<"\n"<<endl;
         }
