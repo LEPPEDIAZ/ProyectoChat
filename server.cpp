@@ -96,8 +96,8 @@ int main(int argc, char *argv[]) {
         if(is_message_waiting(sockSd)){
             printf("hay un mensaje en cola!\n");
             string mensaje = recibir_mensaje(sockSd);
-            cout<<"Mensajes: "<<mensaje<"\n";
-            cout<<"test: "<<test_auto_io(sockSd)<"\n";
+            cout<<"Mensajes: "<<mensaje<<"\n";
+            cout<<"test: "<<test_auto_io(sockSd)<<"\n";
         }
 
 

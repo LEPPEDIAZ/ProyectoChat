@@ -33,7 +33,7 @@ string test_auto_io(int sockSd){
     char buffer[m_size];
     bzero(buffer, m_size);
 
-    int response_len = read(socket, buffer, m_size);
+    int response_len = read(socket, buffer, m_size-1);
 
     if (response_len < 0)
         return "error al recibir el mensaje";
