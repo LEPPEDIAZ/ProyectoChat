@@ -96,15 +96,10 @@ int main(int argc, char *argv[]) {
 	string mensaje = recibir_mensaje(newSd);
         if(mensaje!="3312wazo"){
             printf("hay un mensaje en cola!\n");
-<<<<<<< HEAD
-            string mensaje = recibir_mensaje(sockSd);
-            cout<<"Mensajes: "<<mensaje<<"\n";
-            cout<<"test: "<<test_auto_io(sockSd)<<"\n";
-=======
             cout << "Mensajes: " << mensaje << "\n" << endl;
             auto mensaje_parseado = json::parse(mensaje);
             cout << "codigo fue: " << mensaje_parseado["code"];
->>>>>>> 6ff8c20f7137a9e751ff8e5c095b8174d8cc0266
+
         }
 
 
