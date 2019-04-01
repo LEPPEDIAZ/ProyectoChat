@@ -93,8 +93,8 @@ int main(int argc, char *argv[]) {
 //        respuesta.success_connection_json(200, 2, "hola", 0);
 //        std::cout << respuesta.to_string() << endl;
 
-        string mensaje = recibir_mensaje(newSd);
-        if (mensaje != "3312wazo") {
+	string mensaje = recibir_mensaje(newSd);
+        if(mensaje!="3312wazo"){
             printf("hay un mensaje en cola!\n");
             cout << "Mensajes: " << mensaje << "\n" << endl;
             auto mensaje_parseado = json::parse(mensaje);
