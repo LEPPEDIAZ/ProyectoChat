@@ -86,21 +86,26 @@ int main(int argc, char *argv[]) {
     int bytesRead, bytesWritten = 0;
     while (1) {
 
-        cout << "Esperando respuesta del cliente..." << endl;
+        //cout << "Esperando respuesta del cliente..." << endl;
 
 
 //        Mensaje respuesta = new Mensaje(1);
 //        respuesta.success_connection_json(200, 2, "hola", 0);
 //        std::cout << respuesta.to_string() << endl;
 
-        if(is_message_waiting(sockSd)){
+	string mensaje = recibir_mensaje(newSd);
+        if(mensaje!="3312wazo"){
             printf("hay un mensaje en cola!\n");
+<<<<<<< HEAD
             string mensaje = recibir_mensaje(sockSd);
             cout<<"Mensajes: "<<mensaje<<"\n";
             cout<<"test: "<<test_auto_io(sockSd)<<"\n";
+=======
+            cout << "Mensajes: " << mensaje << "\n" << endl;
+            auto mensaje_parseado = json::parse(mensaje);
+            cout << "codigo fue: " << mensaje_parseado["code"];
+>>>>>>> 6ff8c20f7137a9e751ff8e5c095b8174d8cc0266
         }
-
-
 
 
     }

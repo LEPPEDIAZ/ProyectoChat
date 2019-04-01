@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include <fstream>
 #include <ctime>
-
+#include "comunicacion/transfer_functions.cpp"
 using namespace std;
 
 string z[10];
@@ -58,7 +58,14 @@ int main(int argc, char *argv[]) {
                          (sockaddr * ) & sendSockAddr, sizeof(sendSockAddr));
     if (status < 0) {
         respuesta.build_error_json("error al conectarse");
+        Mensaje error_connect = new Mensaje(1);
+        error_connect.error_connection_json(1, "no se puedo conectar al servidor");
+        std::cout << error_connect.to_string() << endl;
     }
+    //parsing code of the request
+    Mensaje request = new Mensaje(1);
+    request.request_connection_json(1, username);
+    std::cout << request.to_string() << endl;
     
     respuesta.build_success_json("Server Connection successfull");
     int bytesRead, bytesWritten = 0;
@@ -75,10 +82,12 @@ int main(int argc, char *argv[]) {
 	
 	
 	
-        if (data == "exit") {
+        if (data == "close") {
+	  
             send(clientSd, (char *) &msg, strlen(msg), 0);
             break;
         }
+	send(clientSd, (char *) &msg, strlen(msg), 0);
         cout << "Esperando respuesta del server..." << endl;
         
         cout << username << ":  " << msg << endl;
