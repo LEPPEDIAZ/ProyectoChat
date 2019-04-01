@@ -75,11 +75,10 @@ int main(int argc, char *argv[]) {
         cout << ">";
         string data;
         getline(cin, data);
-        strcpy(msg, data.c_str());
 	Mensaje receive = new Mensaje(1);
     	receive.receive_message_json(1, username, data);
 	std::cout << receive.to_string() << endl;
-	
+        strcpy(msg, receive.to_string().c_str());
 	
 	
         if (data == "close") {
