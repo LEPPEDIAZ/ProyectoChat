@@ -93,8 +93,8 @@ int main(int argc, char *argv[]) {
 //        respuesta.success_connection_json(200, 2, "hola", 0);
 //        std::cout << respuesta.to_string() << endl;
         int message_size = is_message_waiting(sockSd);
-        if(is_message_waiting(sockSd,message_size)){
-            string mensaje = recibir_mensaje(sockSd);
+        if(message_size > 0){
+            string mensaje = recibir_mensaje(sockSd,message_size);
             cout<<"Mensaje: "<<mensaje;
 //            printf("Mensaje: %s\n",mensaje);
         }
