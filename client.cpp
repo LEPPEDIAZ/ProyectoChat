@@ -16,10 +16,48 @@
 #include <fcntl.h>
 #include <fstream>
 #include <ctime>
+#include <pthread.h>
+#include <cstdlib>
 #include "comunicacion/transfer_functions.cpp"
 using namespace std;
 
 string z[10];
+
+struct thread_data {
+	int clientSd;
+	string username;
+};
+
+void *SendThread(void *threadarg){
+	struct thread_data *my_data;
+	my_data = (struct thread_data *) threadarg;
+	int clientSd = my_data->clientSd;
+	string username = my_data->username;
+
+	char msg[1500];
+	
+	while (1) {
+		cout << ">";
+		string data;
+		getline(cin, data);
+		Mensaje receive = new Mensaje(1);
+		receive.receive_message_json(1, username, data);
+		std::cout << receive.to_string() << endl;
+		strcpy(msg, receive.to_string().c_str());
+
+
+		if (data == "close") {
+		  
+		    send(clientSd, (char *) &msg, strlen(msg), 0);
+		    break;
+		}
+		send(clientSd, (char *) &msg, strlen(msg), 0);
+		cout << "Esperando respuesta del server..." << endl;
+
+		cout <<username << ":  " << msg << endl;
+	}
+
+}
 
 
 int main(int argc, char *argv[]) {
@@ -71,28 +109,21 @@ int main(int argc, char *argv[]) {
     int bytesRead, bytesWritten = 0;
     struct timeval start1, end1;
     gettimeofday(&start1, NULL);
-    while (1) {
-        cout << ">";
-        string data;
-        getline(cin, data);
-	Mensaje receive = new Mensaje(1);
-    	receive.receive_message_json(1, username, data);
-	std::cout << receive.to_string() << endl;
-        strcpy(msg, receive.to_string().c_str());
+
+
+    //Threads
+    pthread_t threadSend;
+    struct thread_data td;
+    int rc;
+    td.clientSd = clientSd;
+    td.username = username;
+    rc = pthread_create(&threadSend, NULL, SendThread, (void *)&td);
 	
-	
-        if (data == "close") {
-	  
-            send(clientSd, (char *) &msg, strlen(msg), 0);
-            break;
-        }
-	send(clientSd, (char *) &msg, strlen(msg), 0);
-        cout << "Esperando respuesta del server..." << endl;
-        
-        cout << username << ":  " << msg << endl;
-    }
-   
+   while(1){
+
+   }
     cout << "********Session********" << endl;
     
     return 0;
 }
+
