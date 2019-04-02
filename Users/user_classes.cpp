@@ -15,7 +15,8 @@ private:
     int _status;
     int _last_action_timestamp;
     int _is_active;
-    int socket;
+    int _socket;
+    thread listener;
     //otras cosas?
 public:
 
@@ -68,6 +69,14 @@ public:
     bool get_user_is_active() {
         return _is_active;
     }
+
+    void set_socket(int socket){
+        _socket = socket;
+    }
+
+    int get_socket(){
+        return _socket;
+    }
 };
 
 
@@ -114,7 +123,7 @@ public:
      *
      * @return -1 si el userstack esta lleno, 0 si fue exitoso
      */
-    int add_user(string username, int status, int last_connected) {
+    int add_user(string username, int status, int last_connected, int socket) {
         int next_index = get_next_empty_user_index();
         if (next_index == -1) {
             return -1;
@@ -123,6 +132,7 @@ public:
         userList[next_index].set_username(username);
         userList[next_index].set_user_status(status);
         userList[next_index].set_last_connected(last_connected);
+        userList[next_index].set_socket(socket);
         return 0;
     }
 
@@ -135,6 +145,7 @@ public:
         userList[index].set_user_is_active(false);
         userList[index].set_user_status(0);
         userList[index].set_username("");
+        userList[index].set_socket(-1);
     }
 
     /**
@@ -166,6 +177,10 @@ public:
             }
         }
         return response;
+    }
+
+    int get_user_socket(int index){
+        return userList[index].get_socket();
     }
 };
 
