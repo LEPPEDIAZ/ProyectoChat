@@ -98,8 +98,8 @@ int main(int argc, char *argv[]) {
     }
 
     cout << "Cliente conectado!" << endl;
-    thread(thread_obj(), counter);
-    counter += 1;
+//    thread(thread_obj(), counter);
+//    counter += 1;
 
     //creat
 
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
             auto mensaje_parseado = json::parse(mensaje);
             int code = mensaje_parseado["code"];
             cout << "codigo fue: " << code << endl;
-            cout << "tipo de dato: " << typeid(mensaje_parseado).name() << endl;
+//            cout << "tipo de dato: " << typeid(mensaje_parseado).name() << endl;
 
             cout << "-----";
 
