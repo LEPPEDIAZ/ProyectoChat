@@ -26,20 +26,20 @@
 using namespace std;
 
 User_Manager users[MAX_USERS_CONNECTED];
+
 //funcion dummy
-void user (int Z)
-{
-	for(int i=0; i < Z; i++) {
-		cout << "Thread using fuction";
-	}
+void user(int Z) {
+    for (int i = 0; i < Z; i++) {
+        cout << "Thread using fuction";
+    }
 }
+
 class thread_obj {
 public:
-	void operator()(int x)
-	{
-		for (int i=0; i < x; i++)
-			cout << "thread usando funcion";
-	}
+    void operator()(int x) {
+        for (int i = 0; i < x; i++)
+            cout << "thread usando funcion";
+    }
 };
 
 int main(int argc, char *argv[]) {
@@ -90,16 +90,16 @@ int main(int argc, char *argv[]) {
 
     int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
     if (newSd < 0) {
-	Mensaje error_connect = new Mensaje(1);
+        Mensaje error_connect = new Mensaje(1);
         error_connect.error_connection_json(1, "no se puedo conectar al servidor");
-        std::cout << error_connect.to_string() << endl;        
-	cerr << "Error aceptando el request del client" << endl;
+        std::cout << error_connect.to_string() << endl;
+        cerr << "Error aceptando el request del client" << endl;
         exit(1);
     }
 
     cout << "Cliente conectado!" << endl;
-    thread new_user(thread_obj(), counter);
-     counter+= 1;
+    thread(thread_obj(), counter);
+    counter += 1;
 
     //creat
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
     gettimeofday(&start1, NULL);
 
     int bytesRead, bytesWritten = 0;
-    
+
     while (1) {
 
         //cout << "Esperando respuesta del cliente..." << endl;
@@ -122,19 +122,37 @@ int main(int argc, char *argv[]) {
             printf("hay un mensaje en cola!\n");
             cout << "Mensajes: " << mensaje << "\n" << endl;
             auto mensaje_parseado = json::parse(mensaje);
-	    int code = mensaje_parseado["code"];
-            cout << "codigo fue: " <<code<<endl;
-	    cout<<"-----";
-	    
+            int code = mensaje_parseado["code"];
+            cout << "codigo fue: " << code << endl;
+            switch (code) {
+                case 1:
+                    string new_username = mensaje_parseado["data"]["user"];
+                    unsigned long int curr_time = time(NULL);
+                    int user_stack_index = users->add_user(new_username, 1, curr_time, newSd);
+                    if (user_stack_index == -1) {
+                        Mensaje respuesta = new Mensaje(501);
+                        respuesta.build_error_json("No se pueden aceptar mas conexiones en este momento");
+                        string response_json = respuesta.to_string();
+                        enviar_mensaje(response_json, users->get_user_socket(user_stack_index));
+                        cout << response_json << endl;
+                        //enviar mensaje de error
+                    } else {
+
+                        Mensaje respuesta = new Mensaje(201);
+                        respuesta.build_connection_success_json(user_stack_index, new_username, 1, curr_time);
+                        string response_json = respuesta.to_string();
+                        enviar_mensaje(response_json, users->get_user_socket(user_stack_index));
+                        cout << response_json << endl;
+                        //enviar mensaje de exito
+                    }
+                    break;
+            }
+            cout << "-----";
+
         }
 
 
     }
-
-    gettimeofday(&end1, NULL);
-    close(newSd);
-    close(sockSd);
-    cout << "********Session********" << endl;
     return 0;
 }
 
