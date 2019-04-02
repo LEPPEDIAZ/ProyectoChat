@@ -20,14 +20,32 @@
 #include "comunicacion/transfer_functions.cpp"
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <thread>
 
 #define MAX_USERS_CONNECTED 5
 using namespace std;
 
 User_Manager users[MAX_USERS_CONNECTED];
+//funcion dummy
+void user (int Z)
+{
+	for(int i=0; i < Z; i++) {
+		cout << "Thread using fuction";
+	}
+}
+class thread_obj {
+public:
+	void operator()(int x)
+	{
+		for (int i=0; i < x; i++)
+			cout << "thread usando funcion";
+	}
+};
 
 int main(int argc, char *argv[]) {
     int sockfd, newsockfd, portno;
+    int counter;
+    counter = 0;
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
     char client_message[200] = {0};
@@ -80,6 +98,8 @@ int main(int argc, char *argv[]) {
     }
 
     cout << "Cliente conectado!" << endl;
+    thread new_user(thread_obj(), counter);
+     counter+= 1;
 
     //creat
 
@@ -87,6 +107,7 @@ int main(int argc, char *argv[]) {
     gettimeofday(&start1, NULL);
 
     int bytesRead, bytesWritten = 0;
+    
     while (1) {
 
         //cout << "Esperando respuesta del cliente..." << endl;
@@ -104,6 +125,7 @@ int main(int argc, char *argv[]) {
 	    int code = mensaje_parseado["code"];
             cout << "codigo fue: " <<code<<endl;
 	    cout<<"-----";
+	    
         }
 
 
@@ -115,4 +137,6 @@ int main(int argc, char *argv[]) {
     cout << "********Session********" << endl;
     return 0;
 }
+
+
 
