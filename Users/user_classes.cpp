@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
-#include <pthread.h>
+//#include <pthread.h>
 
 #define MAX_USER_CONNECTIONS 5
 using namespace std;
@@ -17,7 +17,7 @@ private:
     int _last_action_timestamp;
     int _is_active;
     int _socket;
-    pthread_t listener_thread;
+//    pthread_t listener_thread;
     //otras cosas?
 public:
 
