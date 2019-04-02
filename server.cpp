@@ -124,29 +124,8 @@ int main(int argc, char *argv[]) {
             auto mensaje_parseado = json::parse(mensaje);
             int code = mensaje_parseado["code"];
             cout << "codigo fue: " << code << endl;
-            switch (code) {
-                case 1:
-                    string new_username = mensaje_parseado["data"]["user"];
-                    unsigned long int curr_time = time(NULL);
-                    int user_stack_index = users->add_user(new_username, 1, curr_time, newSd);
-                    if (user_stack_index == -1) {
-                        Mensaje respuesta = new Mensaje(501);
-                        respuesta.build_error_json("No se pueden aceptar mas conexiones en este momento");
-                        string response_json = respuesta.to_string();
-                        enviar_mensaje(response_json, users->get_user_socket(user_stack_index));
-                        cout << response_json << endl;
-                        //enviar mensaje de error
-                    } else {
+            cout << "tipo de dato: " << typeid(mensaje_parseado).name() << endl;
 
-                        Mensaje respuesta = new Mensaje(201);
-                        respuesta.build_connection_success_json(user_stack_index, new_username, 1, curr_time);
-                        string response_json = respuesta.to_string();
-                        enviar_mensaje(response_json, users->get_user_socket(user_stack_index));
-                        cout << response_json << endl;
-                        //enviar mensaje de exito
-                    }
-                    break;
-            }
             cout << "-----";
 
         }

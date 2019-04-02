@@ -1,7 +1,8 @@
 
 #include <string>
 #include <vector>
-#include<ctime>
+#include <ctime>
+#include <pthread.h>
 
 #define MAX_USER_CONNECTIONS 5
 using namespace std;
@@ -16,14 +17,14 @@ private:
     int _last_action_timestamp;
     int _is_active;
     int _socket;
-    thread listener;
+    pthread_t listener_thread;
     //otras cosas?
 public:
 
     /**
      * void User constructor, inicializa un usuario como inactivo
      */
-     User() {
+    User() {
         _username = "";
         _status = 1;
         _last_action_timestamp = "";
@@ -31,7 +32,7 @@ public:
 
     }
 
-     User(string username, int status, int last_connected) {
+    User(string username, int status, int last_connected) {
         _username = username;
         _status = status;
         _last_action_timestamp = last_connected;
@@ -70,11 +71,11 @@ public:
         return _is_active;
     }
 
-    void set_socket(int socket){
+    void set_socket(int socket) {
         _socket = socket;
     }
 
-    int get_socket(){
+    int get_socket() {
         return _socket;
     }
 };
@@ -112,7 +113,7 @@ private:
         return curr_time - userList[userIndex].get_last_connected();
     }
 
-public: 
+public:
 
     /**
      * agrega un usuario al userstack
@@ -179,7 +180,7 @@ public:
         return response;
     }
 
-    int get_user_socket(int index){
+    int get_user_socket(int index) {
         return userList[index].get_socket();
     }
 };
