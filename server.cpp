@@ -20,14 +20,32 @@
 #include "comunicacion/transfer_functions.cpp"
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <thread>
 
 #define MAX_USERS_CONNECTED 5
 using namespace std;
 
 User_Manager users[MAX_USERS_CONNECTED];
+//funcion dummy
+void user (int Z)
+{
+	for(int i=0; i < Z; i++) {
+		cout << "Thread using fuction";
+	}
+}
+class thread_obj {
+public:
+	void operator()(int x)
+	{
+		for (int i=0; i < x; i++)
+			cout << "thread usando funcion";
+	}
+};
 
 int main(int argc, char *argv[]) {
     int sockfd, newsockfd, portno;
+    int counter;
+    counter = 0;
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
     char client_message[200] = {0};
@@ -72,11 +90,16 @@ int main(int argc, char *argv[]) {
 
     int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
     if (newSd < 0) {
-        cerr << "Error aceptando el request del client" << endl;
+	Mensaje error_connect = new Mensaje(1);
+        error_connect.error_connection_json(1, "no se puedo conectar al servidor");
+        std::cout << error_connect.to_string() << endl;        
+	cerr << "Error aceptando el request del client" << endl;
         exit(1);
     }
 
     cout << "Cliente conectado!" << endl;
+    thread new_user(thread_obj(), counter);
+     counter+= 1;
 
     //creat
 
@@ -84,6 +107,7 @@ int main(int argc, char *argv[]) {
     gettimeofday(&start1, NULL);
 
     int bytesRead, bytesWritten = 0;
+    
     while (1) {
 
         //cout << "Esperando respuesta del cliente..." << endl;
@@ -98,7 +122,10 @@ int main(int argc, char *argv[]) {
             printf("hay un mensaje en cola!\n");
             cout << "Mensajes: " << mensaje << "\n" << endl;
             auto mensaje_parseado = json::parse(mensaje);
-            cout << "codigo fue: " << mensaje_parseado["code"];
+	    int code = mensaje_parseado["code"];
+            cout << "codigo fue: " <<code<<endl;
+	    cout<<"-----";
+	    
         }
 
 
@@ -110,3 +137,6 @@ int main(int argc, char *argv[]) {
     cout << "********Session********" << endl;
     return 0;
 }
+
+
+
