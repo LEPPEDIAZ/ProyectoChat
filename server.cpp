@@ -72,7 +72,10 @@ int main(int argc, char *argv[]) {
 
     int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
     if (newSd < 0) {
-        cerr << "Error aceptando el request del client" << endl;
+	Mensaje error_connect = new Mensaje(1);
+        error_connect.error_connection_json(1, "no se puedo conectar al servidor");
+        std::cout << error_connect.to_string() << endl;        
+	cerr << "Error aceptando el request del client" << endl;
         exit(1);
     }
 
@@ -112,3 +115,4 @@ int main(int argc, char *argv[]) {
     cout << "********Session********" << endl;
     return 0;
 }
+
