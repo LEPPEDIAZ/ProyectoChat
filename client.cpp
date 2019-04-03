@@ -57,6 +57,8 @@ void *SendThread(void *threadarg){
 		cout <<username << ":  " << msg << endl;
 	}
 
+	return (void*) "3312wazo";
+
 }
 
 
@@ -118,9 +120,9 @@ int main(int argc, char *argv[]) {
     td.clientSd = clientSd;
     td.username = username;
     rc = pthread_create(&threadSend, NULL, SendThread, (void *)&td);
-	
-    while(1){
-    }
+
+    void *returnSend;
+    pthread_join(threadSend, &returnSend);
     cout << "********Session********" << endl;
     
     return 0;
