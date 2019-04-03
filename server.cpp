@@ -57,9 +57,10 @@ void *handle_connection(void *sock_arg) {
                     vector<int> targets = mensaje_parseado["data"]["to"];
 
                     for (auto it = targets.begin(); it != targets.end(); it++) {
-                        Mensaje user_message = new Mensaje(201);
-                        user_message.send_message_json(it,targets,mensaje,"");
-                        enviar_mensaje(user_message.to_string(),users->get_user_socket(it));
+                        cout<<it<<endl;
+//                        Mensaje user_message = new Mensaje(201);
+//                        user_message.send_message_json(it,targets,mensaje,"");
+//                        enviar_mensaje(user_message.to_string(),users->get_user_socket(it));
 //                        write(user->fd, msg.c_str(), msg.length());
                     }
                     break;
