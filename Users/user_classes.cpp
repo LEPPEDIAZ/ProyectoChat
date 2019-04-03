@@ -15,7 +15,7 @@ private:
     string _username;
     int _status;
     int _last_action_timestamp;
-    int _is_active;
+    bool _is_active;
     int _socket;
     pthread_t _user_thread;
     //otras cosas?
@@ -36,7 +36,7 @@ public:
         _username = username;
         _status = status;
         _last_action_timestamp = last_connected;
-        _is_active = true;
+        _is_active = false;
     }
 
     int get_user_status() {
@@ -101,7 +101,7 @@ private:
     int get_next_empty_user_index() {
         int index = 0;
         for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
-            if (userList->get_user_is_active()) {
+            if (userList->get_user_is_active() == false) {
                 return i;
             }
         }

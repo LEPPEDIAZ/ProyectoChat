@@ -40,6 +40,7 @@ void *handle_connection(void *sock_arg) {
         exit(1);
     }
     cout << "Cliente conectado!" << endl;
+    cout << "Cliente socket: " << sockID<< endl;
     while (1) {
 
         string mensaje = recibir_mensaje(sockID);
@@ -110,17 +111,16 @@ int main(int argc, char *argv[]) {
 		string new_username = mensaje_parseado["data"]["username"];
 		unsigned long int curr_time = time(NULL);
 
-		int user_stack_id = users->add_user(new_username, 1, curr_time, accepted);
-
+		int user_stack_id = users->add_user(new_username, 1, 1, accepted);
+		cout << user_stack_id << endl;
 		if (user_stack_id != -1) {
-		    pthread_t thr;
-		    int socki = users->get_user_socket(user_stack_id);
-		    if (pthread_create(&thr, NULL, handle_connection, (void *) &socki) != 0) {
-
-		        perror("create thread");
-		        exit(EXIT_FAILURE);
-		    }
+		 pthread_t thr;
+		int socki = users->get_user_socket(user_stack_id);
+		cout << "Cliente socket: " << socki<< endl;
+		pthread_create(&thr, NULL, handle_connection, (void *) &socki);   
+		    
 		}
+		
 	}
         /*Create the thread and pass the socket descriptor*/
     }
