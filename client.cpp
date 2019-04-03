@@ -82,8 +82,11 @@ int main(int argc, char *argv[]) {
     }
     //parsing code of the request
     Mensaje request = new Mensaje(1);
-    request.request_connection_json(1, username);
+    request.request_connection_json(0, username);
     std::cout << request.to_string() << endl;
+
+    strcpy(msg, request.to_string().c_str());
+    send(clientSd, (char *) &msg, strlen(msg), 0);
     
     respuesta.build_success_json("Server Connection successfull");
     int bytesRead, bytesWritten = 0;

@@ -91,7 +91,7 @@ public:
 /** request connection */
     void request_connection_json(int code, string username) {
         j["code"] = code;
-        j["user"]["username"] = username;
+        j["data"]["username"] = username;
 	
     }
 /*success */ 
