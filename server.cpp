@@ -51,7 +51,7 @@ void *handle_connection(void *sock_arg) {
             cout << "codigo fue: " << code << endl;
             cout << "-----";
 
-            send(sockID, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
+            //send(sockID, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
         }
     }
 
@@ -102,21 +102,26 @@ int main(int argc, char *argv[]) {
     int accepted;
     while ((accepted = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize)) > 0) {
         cout<<"mensaje recibido!"<<endl;
-        string mensaje = recibir_mensaje(sockSd);
+        string mensaje = recibir_mensaje(accepted);
         cout<<mensaje<<endl;
         auto mensaje_parseado = json::parse(mensaje);
-        string new_username = mensaje_parseado["date"]["username"];
-        unsigned long int curr_time = time(NULL);
+	int code = mensaje_parseado["code"];
+	if(code == 0){
+		string new_username = mensaje_parseado["data"]["username"];
+		unsigned long int curr_time = time(NULL);
 
-        int user_stack_id = users->add_user(new_username, 1, curr_time, accepted);
+		int user_stack_id = users->add_user(new_username, 1, curr_time, accepted);
 
-        if (user_stack_id != -1) {
-            if (pthread_create(users->get_user_socket(user_stack_id), NULL, &handle_connection, (void *) accepted) != 0) {
+		if (user_stack_id != -1) {
+		    pthread_t thr;
+		    int socki = users->get_user_socket(user_stack_id);
+		    if (pthread_create(&thr, NULL, handle_connection, (void *) &socki) != 0) {
 
-                perror("create thread");
-                exit(EXIT_FAILURE);
-            }
-        }
+		        perror("create thread");
+		        exit(EXIT_FAILURE);
+		    }
+		}
+	}
         /*Create the thread and pass the socket descriptor*/
     }
 
