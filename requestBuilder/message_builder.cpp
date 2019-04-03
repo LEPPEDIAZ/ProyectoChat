@@ -117,7 +117,10 @@ public:
         j["data"]["to"] = List;
         j["data"]["message"] = message;
         j["data"]["file_type"] = file_type;
-
+    }
+    void send_message_success_json(string from, message string){
+        j["data"]["from"] = from;
+        j["data"]["from"] = string;
     }
 
 //* Receive user *//

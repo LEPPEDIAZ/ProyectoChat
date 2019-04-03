@@ -139,6 +139,9 @@ public:
         userList[index].set_user_status(0);
         userList[index].set_username("");
         userList[index].set_socket(-1);
+
+        int rc = pthread_join(userList[index].get_user_thread(),NULL  );
+
     }
 
     /**
@@ -193,8 +196,13 @@ public:
         //no hay casillas de usuario vacias
         return -1;
     }
-    void set_user_status(int index, int status){
+
+    void set_user_status(int index, int status) {
         userList[index].set_user_status(status);
+    }
+
+    string get_username_by_index(int index){
+        return userList[index].get_username();
     }
 };
 
