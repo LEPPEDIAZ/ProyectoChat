@@ -153,14 +153,18 @@ int main(int argc, char *argv[]) {
 		send(clientSd, (char *) &msg, strlen(msg), 0);
 
 		// READ THREAD
-		pthread_t threadRead;
+		/*pthread_t threadRead;
 		struct thread_data tr;
 		int rc;
 		tr.clientSd = clientSd;
 		rc = pthread_create(&threadRead, NULL, ReadThreadUsersList, (void *)&tr);
 
 		void *returnSend;
-		pthread_join(threadRead, &returnSend);
+		pthread_join(threadRead, &returnSend);*/
+		cout << ">" << flush;
+			
+		string option;
+		getline(cin, option);
 	}
 
 	if(option == "6"){
@@ -194,14 +198,18 @@ int main(int argc, char *argv[]) {
 		send(clientSd, (char *) &msg, strlen(msg), 0);
 
 		// READ THREAD
-		pthread_t threadRead;
+		/*pthread_t threadRead;
 		struct thread_data tr;
 		int rc;
 		tr.clientSd = clientSd;
 		rc = pthread_create(&threadRead, NULL, ReadThreadUsersList, (void *)&tr);
 
 		void *returnSend;
-		pthread_join(threadRead, &returnSend);
+		pthread_join(threadRead, &returnSend);*/
+		cout << ">" << flush;
+			
+		string option;
+		getline(cin, option);
 	}
     }
 
