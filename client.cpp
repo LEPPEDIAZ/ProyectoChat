@@ -69,8 +69,10 @@ void *ReadThread(void *threadarg){
 	while(1){
 		string mensaje = recibir_mensaje(clientSd);
 		if (mensaje != "3312wazo") {
-		    printf("hay un mensaje en cola!\n");
-		    cout << "Mensajes: " << mensaje << "\n" << endl;
+		    printf("\nhay un mensaje en cola!\n");
+		    cout << "Mensajes: " << mensaje << endl;
+		    cout << ">";
+		    cout.flush();
 
         	}
 		
