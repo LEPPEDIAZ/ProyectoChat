@@ -118,9 +118,9 @@ public:
         j["data"]["message"] = message;
         j["data"]["file_type"] = file_type;
     }
-    void send_message_success_json(string from, message string){
+    void send_message_success_json(string from, string message){
         j["data"]["from"] = from;
-        j["data"]["from"] = string;
+        j["data"]["from"] = message;
     }
 
 //* Receive user *//
