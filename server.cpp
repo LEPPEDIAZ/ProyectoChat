@@ -127,6 +127,8 @@ int main(int argc, char *argv[]) {
 //            cout << "tipo de dato: " << typeid(mensaje_parseado).name() << endl;
 
             cout << "-----";
+	    
+	    send(newSd, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
 
         }
 
