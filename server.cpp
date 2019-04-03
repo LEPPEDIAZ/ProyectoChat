@@ -58,11 +58,9 @@ void *handle_connection(void *sock_arg) {
                     auto targets = mensaje_parseado["data"]["to"];
 
                     for (auto it = targets.begin(); it != targets.end(); it++) {
-//                        cout<<it<<endl;
                         Mensaje user_message = new Mensaje(201);
                         user_message.send_message_json(*it,targets,mensaje,"");
                         enviar_mensaje(user_message.to_string(),users->get_user_socket(*it));
-//                        write(user->fd, msg.c_str(), msg.length());
                     }
                     break;
             }
@@ -127,6 +125,7 @@ int main(int argc, char *argv[]) {
             int user_stack_id = users->add_user(new_username, 1, 1, accepted);
             cout << user_stack_id << endl;
             if (user_stack_id != -1) {
+                cout<<"stack id: "<<user_stack_id<<endl;
                 pthread_t thr;
                 struct thread_data td;
                 td.sockID = users->get_user_socket(user_stack_id);

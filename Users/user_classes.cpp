@@ -79,7 +79,7 @@ public:
         return _socket;
     }
 
-    pthread_t get_user_thread(){
+    pthread_t get_user_thread() {
         return _user_thread;
     }
 
@@ -94,20 +94,6 @@ class User_Manager {
 private:
     User userList[MAX_USER_CONNECTIONS];
 
-    /**
-     * recorre el userList y busca el siguiente index de usuario vacio
-     * @return int: -1 si la cantidad de usuarios esta llena, si no, el index mas pequeno del usuario vacio
-     */
-    int get_next_empty_user_index() {
-        int index = 0;
-        for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
-            if (userList[i].get_user_is_active() == false) {
-                return i;
-            }
-        }
-        //no hay casillas de usuario vacias
-        return -1;
-    }
 
     /**
      * hace la operacion matematica encargada de calcular tiempo desde ultima accion
@@ -190,8 +176,21 @@ public:
         return userList[index].get_socket();
     }
 
-    pthread_t get_user_thread(int index){
-        return userList[index].get_user_thread();
+    pthread_t get_user_thread(int index)
+
+    /**
+* recorre el userList y busca el siguiente index de usuario vacio
+* @return int: -1 si la cantidad de usuarios esta llena, si no, el index mas pequeno del usuario vacio
+*/
+    int get_next_empty_user_index() {
+        int index = 0;
+        for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
+            if (!userList[i].get_user_is_active()) {
+                return i;
+            }
+        }
+        //no hay casillas de usuario vacias
+        return -1;
     }
 };
 
