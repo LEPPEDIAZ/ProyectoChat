@@ -28,7 +28,7 @@ struct thread_data {
 	string username;
 };
 
-void *SendThread(void *threadarg){
+void *SendThreadBroadcasting(void *threadarg){
 	struct thread_data *my_data;
 	my_data = (struct thread_data *) threadarg;
 	int clientSd = my_data->clientSd;
@@ -40,6 +40,7 @@ void *SendThread(void *threadarg){
 		cout << ">";
 		string data;
 		getline(cin, data);
+		cout << "\r\e[A" << flush;
 		Mensaje receive = new Mensaje(1);
 		receive.receive_message_json(1, username, data);
 		std::cout << receive.to_string() << endl;
@@ -48,7 +49,7 @@ void *SendThread(void *threadarg){
 
 		if (data == "close") {
 		  
-		    send(clientSd, (char *) &msg, strlen(msg), 0);
+		    send(clientSd, "3312wazos", strlen("3312wazos"), 0);
 		    break;
 		}
 		send(clientSd, (char *) &msg, strlen(msg), 0);
@@ -58,6 +59,40 @@ void *SendThread(void *threadarg){
 	}
 
 	return (void*) "3312wazo";
+
+}
+
+void *ReadThreadBroadcasting(void *threadarg){
+	struct thread_data *my_data;
+	my_data = (struct thread_data *) threadarg;
+	int clientSd = my_data->clientSd;
+
+	while(1){
+		string mensaje = recibir_mensaje(clientSd);
+		if (mensaje != "3312wazo") {
+		    cout << "\r\e[A" << flush;
+		    cout << "\r\e[A" << flush;
+		    cout << "\n\nEl servidor ha respondido"<< endl;
+		    cout << "Mensajes: " << mensaje << "\n" << endl;
+		    cout << ">";
+		    cout.flush();
+
+        	}
+		
+	}
+}
+
+
+void DisplayClientMenu(){
+	cout << "Main menu\n";
+	cout << "1. Broadcasting\n";
+	cout << "2. Mensaje privado\n";
+	cout << "3. Cambiar status\n";
+	cout << "4. Lista de usuarios conectados\n";
+	cout << "5. Desplegar informacion de un usuario en particular\n";
+	cout << "6. Ayuda\n";
+	cout << "7. Salir\n";
+
 
 }
 
@@ -111,20 +146,47 @@ int main(int argc, char *argv[]) {
     int bytesRead, bytesWritten = 0;
     struct timeval start1, end1;
     gettimeofday(&start1, NULL);
+    
+    /*----------MENU---------*/
+    bool inMenu = true;
+    while(inMenu){
+	system("clear");
+	DisplayClientMenu();
+	string option;
+	getline(cin, option);
+	system("clear");
 
+	if(option == "1"){
+		/*----------THREADS---------*/
+		// SEND THREAD
+		pthread_t threadSend;
+		struct thread_data ts;
+		int rs;
+		ts.clientSd = clientSd;
+		ts.username = username;
+		rs = pthread_create(&threadSend, NULL, SendThreadBroadcasting, (void *)&ts);
 
-    //Threads
-    pthread_t threadSend;
-    struct thread_data td;
-    int rc;
-    td.clientSd = clientSd;
-    td.username = username;
-    rc = pthread_create(&threadSend, NULL, SendThread, (void *)&td);
+		// READ THREAD
+		pthread_t threadRead;
+		struct thread_data tr;
+		int rc;
+		tr.clientSd = clientSd;
+		rc = pthread_create(&threadRead, NULL, ReadThreadBroadcasting, (void *)&tr);
 
-    void *returnSend;
-    pthread_join(threadSend, &returnSend);
+		void *returnSend;
+		pthread_join(threadSend, &returnSend);
+		pthread_cancel(threadRead);
+	}
+	
+	if(option == "7"){
+		inMenu = false;
+	}
+	
+    }
+
     cout << "********Session********" << endl;
     
     return 0;
 }
+
 

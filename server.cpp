@@ -113,6 +113,12 @@ void handle_connection(int sockID) {
             auto mensaje_parseado = json::parse(mensaje);
             int code = mensaje_parseado["code"];
             cout << "codigo fue: " << code << endl;
+
+//            cout << "tipo de dato: " << typeid(mensaje_parseado).name() << endl;
+
+            cout << "-----";
+
+            send(newSd, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
         }
     }
 
