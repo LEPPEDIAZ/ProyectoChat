@@ -59,7 +59,7 @@ void *handle_connection(void *sock_arg) {
 
                     for (auto it = targets.begin(); it != targets.end(); it++) {
                         Mensaje user_message = new Mensaje(201);
-                        user_message.send_message_success_json(users.get_username_by_index(*it),mensaje);
+                        user_message.send_message_success_json(users->get_username_by_index(*it),mensaje);
                         enviar_mensaje(user_message.to_string(), users->get_user_socket(*it));
                     }
                     break;
