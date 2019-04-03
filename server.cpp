@@ -21,6 +21,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <thread>
+#include <pthread.h>
 
 #define MAX_USERS_CONNECTED 5
 using namespace std;
@@ -68,7 +69,7 @@ int main(int argc, char *argv[]) {
     socklen_t newSockAddrSize = sizeof(newSockAddr);
 
     int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
-
+    int accepted;
     while ((accepted = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize)) > 0) {
         pthread_t threadSend;
 
