@@ -17,7 +17,7 @@ private:
     int _last_action_timestamp;
     int _is_active;
     int _socket;
-//    pthread_t listener_thread;
+    pthread_t _user_thread;
     //otras cosas?
 public:
 
@@ -78,6 +78,12 @@ public:
     int get_socket() {
         return _socket;
     }
+
+    pthread get_user_thread(){
+        return _user_thread;
+    }
+
+
 };
 
 
@@ -182,6 +188,10 @@ public:
 
     int get_user_socket(int index) {
         return userList[index].get_socket();
+    }
+
+    pthread get_user_thread(int index){
+        return userList[index].get_user_thread();
     }
 };
 
