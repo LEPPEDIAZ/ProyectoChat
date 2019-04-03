@@ -51,18 +51,37 @@ void *handle_connection(void *sock_arg) {
             auto mensaje_parseado = json::parse(mensaje);
             int code = mensaje_parseado["code"];
             switch (code) {
+                //send message & boradcast
                 case 1:
-                case 4:
 
                     auto mensaje = mensaje_parseado["data"]["message"];
                     auto targets = mensaje_parseado["data"]["to"];
 
                     for (auto it = targets.begin(); it != targets.end(); it++) {
                         Mensaje user_message = new Mensaje(201);
-                        user_message.send_message_json(*it,targets,mensaje,"");
-                        enviar_mensaje(user_message.to_string(),users->get_user_socket(*it));
+                        user_message.send_message_json(*it, targets, mensaje, "");
+                        enviar_mensaje(user_message.to_string(), users->get_user_socket(*it));
                     }
                     break;
+//status change
+                case 4:
+                    auto new_user_status = mensaje_parseado["data"]["new_status"];
+                    auto user_index = mensaje_parseado["user"]["message"];
+                    for (auto it = user_index.begin(); it != user_index.end(); it++) {
+                        users->set_user_status(*it, new_user_status);
+                        Mensaje user_message = new Mensaje(204);
+                        user_message.build_success_json("cambio de status exitoso");
+                        enviar_mensaje(user_message.to_string(), users->get_user_socket(*it));
+                    }
+                    break;
+                case 5:
+                    auto username = mensaje_parseado["data"]["username"];
+                    users->whipe_user(users->search_user_by_username(username));
+                    break;
+
+                default:
+                    break;
+
             }
             //send(sockID, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
         }
@@ -125,7 +144,7 @@ int main(int argc, char *argv[]) {
             int user_stack_id = users->add_user(new_username, 1, 1, accepted);
             cout << user_stack_id << endl;
             if (user_stack_id != -1) {
-                cout<<"stack id: "<<user_stack_id<<endl;
+                cout << "stack id: " << user_stack_id << endl;
                 pthread_t thr;
                 struct thread_data td;
                 td.sockID = users->get_user_socket(user_stack_id);

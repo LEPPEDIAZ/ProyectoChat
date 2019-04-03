@@ -7,8 +7,9 @@
 
 using namespace std;
 using json = nlohmann::json;
-time_t _tm= time(NULL );
-struct tm * curtime = localtime( &_tm);
+time_t _tm = time(NULL);
+struct tm *curtime = localtime(&_tm);
+
 class Mensaje {
 private:
     json j;
@@ -86,65 +87,73 @@ public:
         j["user"]["id"] = user_id;
         j["user"]["username"] = username;
         j["user"]["status"] = status;
-	j["user"]["last_connected"] = last_connected;
+        j["user"]["last_connected"] = last_connected;
     }
+
 /** request connection */
     void request_connection_json(int code, string username) {
         j["code"] = code;
         j["data"]["username"] = username;
-	
+
     }
-/*success */ 
+
+/*success */
     void success_connection_json(int code, int user_id, string username, int status) {
         j["code"] = code;
-	j["data"]["user"]["id"] = user_id;
+        j["data"]["user"]["id"] = user_id;
         j["data"]["user"]["username"] = username;
         j["data"]["user"]["status"] = status;
     }
+
 //*error *//
     void error_connection_json(int code, string error_message) {
         j["code"] = code;
-	j["data"]["error_message"] = error_message;
-        ;
+        j["data"]["error_message"] = error_message;;
     }
+
 //* send *//
-	void send_message_json(int code, vector<int> List, string message, string file_type) {
+    void send_message_json(int code, vector<int> List, string message, string file_type) {
         j["code"] = code;
-	j["data"]["to"] = List;
+        j["data"]["to"] = List;
         j["data"]["message"] = message;
-	j["data"]["file_type"] = file_type;
-       
+        j["data"]["file_type"] = file_type;
+
     }
+
 //* Receive user *//
-	void recieve_user_json(int code, vector<int> List) {
+    void recieve_user_json(int code, vector<int> List) {
         j["code"] = code;
-	j["data"]["users"] = List;
-       
+        j["data"]["users"] = List;
+
     }
+
 //* GET user *//
-	void get_user_json(int code, vector<int> List) {
+    void get_user_json(int code, vector<int> List) {
         j["code"] = code;
-	j["data"]["user"] = List;
-       
+        j["data"]["user"] = List;
+
     }
+
 //* receive *//
-    void receive_message_json(int code,  string username, string message) {
+    void receive_message_json(int code, string username, string message) {
         j["code"] = code;
-	j["data"]["from"] = username;
+        j["data"]["from"] = username;
         j["data"]["message"] = message;
-       
+
     }
+
 //* change status *//
     void change_status_json(int code, int user_id, int new_status) {
         j["code"] = code;
-	j["data"]["user"] = user_id;
+        j["data"]["user"] = user_id;
         j["data"]["new_status"] = new_status;
-       
+
     }
-     void goodbye_handshake_json(int code, string empty) {
+
+    void goodbye_handshake_json(int code, string username) {
         j["code"] = code;
-	j["data"] = empty;
-       
+        j["data"]['username'] = username;
+
     }
 
     /**
