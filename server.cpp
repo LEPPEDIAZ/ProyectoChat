@@ -118,7 +118,7 @@ void handle_connection(int sockID) {
 
             cout << "-----";
 
-            send(newSd, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
+            send(sockID, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
         }
     }
 
