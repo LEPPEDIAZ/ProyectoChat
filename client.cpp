@@ -171,21 +171,44 @@ int main(int argc, char *argv[]) {
 		getline(cin, op);
 		
 	}
+
 	
+
 	if(option == "7"){
 		Mensaje goodbye = new Mensaje(1);
-		goodbye.goodbye_handshake_json(5, "");
+		goodbye.goodbye_handshake_json(5, username);
 		strcpy(msg, goodbye.to_string().c_str());
 
 		send(clientSd, (char *) &msg, strlen(msg), 0);
 		inMenu = false;
 	}
-	
+	if(option == "5"){
+		vector<int> List;
+		List.push_back(1);
+		Mensaje getUsers = new Mensaje(1);
+		getUsers.get_user_json(3, List);
+		respuesta.build_connection_success_json(0, username, 1, "7 de la noche");
+		std::cout << respuesta.to_string() << endl;
+		strcpy(msg, getUsers.to_string().c_str());
+
+		send(clientSd, (char *) &msg, strlen(msg), 0);
+
+		// READ THREAD
+		pthread_t threadRead;
+		struct thread_data tr;
+		int rc;
+		tr.clientSd = clientSd;
+		rc = pthread_create(&threadRead, NULL, ReadThreadUsersList, (void *)&tr);
+
+		void *returnSend;
+		pthread_join(threadRead, &returnSend);
+	}
     }
 
     cout << "********Session********" << endl;
     
     return 0;
 }
+
 
 
