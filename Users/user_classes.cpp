@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
-//#include <pthread.h>
+#include <pthread.h>
 
 #define MAX_USER_CONNECTIONS 5
 using namespace std;
@@ -79,7 +79,7 @@ public:
         return _socket;
     }
 
-    pthread get_user_thread(){
+    pthread_t get_user_thread(){
         return _user_thread;
     }
 
@@ -190,7 +190,7 @@ public:
         return userList[index].get_socket();
     }
 
-    pthread get_user_thread(int index){
+    pthread_t get_user_thread(int index){
         return userList[index].get_user_thread();
     }
 };
