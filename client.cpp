@@ -156,8 +156,22 @@ int main(int argc, char *argv[]) {
 		void *returnSend;
 		pthread_join(threadRead, &returnSend);
 	}
+
+	if(option == "6"){
+		system("clear");
+		cout << "Necesito ayuda, quiero dormir" << endl;
+		string op;
+		cout << ">" << flush;
+		getline(cin, op);
+		
+	}
 	
 	if(option == "7"){
+		Mensaje goodbye = new Mensaje(1);
+		goodbye.goodbye_handshake_json(5, "");
+		strcpy(msg, goodbye.to_string().c_str());
+
+		send(clientSd, (char *) &msg, strlen(msg), 0);
 		inMenu = false;
 	}
 	
