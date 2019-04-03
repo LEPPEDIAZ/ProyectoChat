@@ -61,6 +61,22 @@ void *SendThread(void *threadarg){
 
 }
 
+void *ReadThread(void *threadarg){
+	struct thread_data *my_data;
+	my_data = (struct thread_data *) threadarg;
+	int clientSd = my_data->clientSd;
+
+	while(1){
+		string mensaje = recibir_mensaje(clientSd);
+		if (mensaje != "3312wazo") {
+		    printf("hay un mensaje en cola!\n");
+		    cout << "Mensajes: " << mensaje << "\n" << endl;
+
+        	}
+		
+	}
+}
+
 
 int main(int argc, char *argv[]) {
     time_t _tm= time(NULL );
@@ -113,13 +129,21 @@ int main(int argc, char *argv[]) {
     gettimeofday(&start1, NULL);
 
 
-    //Threads
+    /*----------THREADS---------*/
+    // SEND THREAD
     pthread_t threadSend;
-    struct thread_data td;
+    struct thread_data ts;
+    int rs;
+    ts.clientSd = clientSd;
+    ts.username = username;
+    rs = pthread_create(&threadSend, NULL, SendThread, (void *)&ts);
+
+    // READ THREAD
+    pthread_t threadRead;
+    struct thread_data tr;
     int rc;
-    td.clientSd = clientSd;
-    td.username = username;
-    rc = pthread_create(&threadSend, NULL, SendThread, (void *)&td);
+    tr.clientSd = clientSd;
+    rc = pthread_create(&threadRead, NULL, ReadThread, (void *)&tr);
 
     void *returnSend;
     pthread_join(threadSend, &returnSend);
