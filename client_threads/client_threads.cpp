@@ -127,7 +127,7 @@ void *ReadThreadUsersList(void *threadarg){
 		    if(code ==203){
 		        vector<int> users = mensaje_parseado["data"]["users"];
 		        cout << "Lista recibida" << endl;
-			cout << ">" << flush;
+			cout << ">" << endl;
 			
 			string option;
 			getline(cin, option);
@@ -136,6 +136,11 @@ void *ReadThreadUsersList(void *threadarg){
 
         	}
 		
+		cout << ">" << endl;
+			
+		string option;
+		getline(cin, option);
+		break;
 	}
 	return (void*) "hey";
 }
