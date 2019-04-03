@@ -141,6 +141,11 @@ public:
         j["data"]["new_status"] = new_status;
        
     }
+     void goodbye_handshake_json(int code, string empty) {
+        j["code"] = code;
+	j["data"] = empty;
+       
+    }
 
     /**
      * convierte el json a un string en formato
