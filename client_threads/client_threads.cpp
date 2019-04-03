@@ -24,7 +24,7 @@ void *SendThreadBroadcasting(void *threadarg){
 
 		if (data == "close") {
 		  
-		    send(clientSd, "3312wazos", strlen("3312wazos"), 0);
+		    //send(clientSd, "3312wazos", strlen("3312wazos"), 0);
 		    break;
 		}
 		
