@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     Mensaje respuesta = new Mensaje(1);
     string username;
     getline(cin, username);
-    respuesta.build_connection_success_json(1, username, 1, "7 de la noche");
+    respuesta.build_connection_success_json(0, username, 1, "7 de la noche");
     std::cout << respuesta.to_string() << endl;
     bzero((char *) &sendSockAddr, sizeof(sendSockAddr));
     bzero((char *) &respuesta, sizeof(respuesta));
