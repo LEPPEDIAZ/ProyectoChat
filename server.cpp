@@ -53,8 +53,9 @@ void *handle_connection(void *sock_arg) {
             switch (code) {
                 case 1:
                 case 4:
-                    string mensaje = mensaje_parseado["data"]["mensaje"];
-                    vector<int> targets = mensaje_parseado["data"]["to"];
+
+                    string mensaje = mensaje_parseado["data"]["message"];
+                    string targets = mensaje_parseado["data"]["to"];
 
                     for (auto it = targets.begin(); it != targets.end(); it++) {
                         cout<<it<<endl;
