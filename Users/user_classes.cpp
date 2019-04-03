@@ -3,6 +3,7 @@
 #include <vector>
 #include <ctime>
 #include <pthread.h>
+#include <iostream>
 
 #define MAX_USER_CONNECTIONS 5
 using namespace std;
@@ -185,7 +186,9 @@ public:
     int get_next_empty_user_index() {
         int index = 0;
         for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
-            if (!userList[i].get_user_is_active()) {
+            bool available_index = userList[i].get_user_is_active();
+            std::cout<<"index: "<<i<<" is: "<<available_index<<std::endl;
+            if (!available_index) {
                 return i;
             }
         }
