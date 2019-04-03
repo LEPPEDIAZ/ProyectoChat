@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 //* La llamada acepta la conexion *//
     socklen_t newSockAddrSize = sizeof(newSockAddr);
 
-    int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
+//    int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
     int accepted;
     while ((accepted = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize)) > 0) {
         cout<<"mensaje recibido!"<<endl;
@@ -121,13 +121,13 @@ int main(int argc, char *argv[]) {
     }
 
 
-    if (newSd < 0) {
-        Mensaje error_connect = new Mensaje(1);
-        error_connect.error_connection_json(1, "no se puedo conectar al servidor");
-        std::cout << error_connect.to_string() << endl;
-        cerr << "Error aceptando el request del client" << endl;
-        exit(1);
-    }
+//    if (newSd < 0) {
+//        Mensaje error_connect = new Mensaje(1);
+//        error_connect.error_connection_json(1, "no se puedo conectar al servidor");
+//        std::cout << error_connect.to_string() << endl;
+//        cerr << "Error aceptando el request del client" << endl;
+//        exit(1);
+//    }
 
     cout << "Cliente conectado!" << endl;
 
