@@ -27,29 +27,8 @@ using namespace std;
 
 User_Manager users[MAX_USERS_CONNECTED];
 
-//funcion dummy
-void user(int Z) {
-    for (int i = 0; i < Z; i++) {
-        cout << "Thread using fuction";
-    }
-}
-
-class thread_obj {
-public:
-    void operator()(int x) {
-        for (int i = 0; i < x; i++)
-            cout << "thread usando funcion";
-    }
-};
-
 int main(int argc, char *argv[]) {
-    int sockfd, newsockfd, portno;
-    int counter;
-    counter = 0;
-    socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
-    char client_message[200] = {0};
-    int n;
     if (argc != 2) {
         cerr << "Usage: port" << endl;
         exit(0);
@@ -89,6 +68,18 @@ int main(int argc, char *argv[]) {
     socklen_t newSockAddrSize = sizeof(newSockAddr);
 
     int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
+
+    while ((accepted = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize)) > 0) {
+        pthread_t threadSend;
+
+        /*Create the thread and pass the socket descriptor*/
+        if (pthread_create(new_thread, NULL, &handle_tcp_connection, (void *) accepted) != 0) {
+            perror("create thread");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+
     if (newSd < 0) {
         Mensaje error_connect = new Mensaje(1);
         error_connect.error_connection_json(1, "no se puedo conectar al servidor");
@@ -98,44 +89,37 @@ int main(int argc, char *argv[]) {
     }
 
     cout << "Cliente conectado!" << endl;
-//    thread(thread_obj(), counter);
-//    counter += 1;
 
-    //creat
 
-    struct timeval start1, end1;
-    gettimeofday(&start1, NULL);
+    return 0;
+}
 
-    int bytesRead, bytesWritten = 0;
+void handle_connection(int sockID) {
 
+    if (sockID < 0) {
+        Mensaje error_connect = new Mensaje(1);
+        error_connect.error_connection_json(1, "no se puedo conectar al servidor");
+        std::cout << error_connect.to_string() << endl;
+        cerr << "Error aceptando el request del client" << endl;
+        exit(1);
+    }
+    cout << "Cliente conectado!" << endl;
     while (1) {
 
-        //cout << "Esperando respuesta del cliente..." << endl;
-
-
-//        Mensaje respuesta = new Mensaje(1);
-//        respuesta.success_connection_json(200, 2, "hola", 0);
-//        std::cout << respuesta.to_string() << endl;
-
-        string mensaje = recibir_mensaje(newSd);
+        string mensaje = recibir_mensaje(sockID);
         if (mensaje != "3312wazo") {
             printf("hay un mensaje en cola!\n");
             cout << "Mensajes: " << mensaje << "\n" << endl;
             auto mensaje_parseado = json::parse(mensaje);
             int code = mensaje_parseado["code"];
             cout << "codigo fue: " << code << endl;
+
 //            cout << "tipo de dato: " << typeid(mensaje_parseado).name() << endl;
 
             cout << "-----";
-	    
-	    send(newSd, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
 
+            send(sockID, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
         }
-
-
     }
-    return 0;
+
 }
-
-
-
