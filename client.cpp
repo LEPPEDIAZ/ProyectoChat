@@ -18,6 +18,7 @@
 #include <ctime>
 #include <pthread.h>
 #include <cstdlib>
+#include <vector>
 #include "comunicacion/transfer_functions.cpp"
 using namespace std;
 
@@ -41,21 +42,22 @@ void *SendThreadBroadcasting(void *threadarg){
 		string data;
 		getline(cin, data);
 		cout << "\r\e[A" << flush;
-		Mensaje receive = new Mensaje(1);
-		receive.receive_message_json(1, username, data);
-		std::cout << receive.to_string() << endl;
-		strcpy(msg, receive.to_string().c_str());
-
 
 		if (data == "close") {
 		  
 		    send(clientSd, "3312wazos", strlen("3312wazos"), 0);
 		    break;
 		}
-		send(clientSd, (char *) &msg, strlen(msg), 0);
-		cout << "Esperando respuesta del server..." << endl;
+		
+		vector<int> List;
+		List.push_back(1);
 
-		cout <<username << ":  " << msg << endl;
+		Mensaje sendMessage = new Mensaje(1);
+		sendMessage.send_message_json(1, List, data, "");
+		strcpy(msg, sendMessage.to_string().c_str());
+
+		send(clientSd, (char *) &msg, strlen(msg), 0);
+		cout << username << ": " << data << endl;
 	}
 
 	return (void*) "3312wazo";
@@ -70,10 +72,8 @@ void *ReadThreadBroadcasting(void *threadarg){
 	while(1){
 		string mensaje = recibir_mensaje(clientSd);
 		if (mensaje != "3312wazo") {
-		    cout << "\r\e[A" << flush;
-		    cout << "\r\e[A" << flush;
-		    cout << "\n\nEl servidor ha respondido"<< endl;
-		    cout << "Mensajes: " << mensaje << "\n" << endl;
+		    cout << "\r" << flush;
+		    cout << "Mensajes: " << mensaje << endl;
 		    cout << ">";
 		    cout.flush();
 
