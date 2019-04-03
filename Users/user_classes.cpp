@@ -177,7 +177,7 @@ public:
         return userList[index].get_socket();
     }
 
-    pthread_t get_user_thread(int index)
+    pthread_t get_user_thread(int index);
 
     /**
 * recorre el userList y busca el siguiente index de usuario vacio
