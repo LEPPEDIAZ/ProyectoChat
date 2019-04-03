@@ -119,9 +119,8 @@ int main(int argc, char *argv[]) {
     td.username = username;
     rc = pthread_create(&threadSend, NULL, SendThread, (void *)&td);
 	
-//   while(1){
-
-  // }
+    while(1){
+    }
     cout << "********Session********" << endl;
     
     return 0;
