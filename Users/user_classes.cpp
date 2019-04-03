@@ -101,7 +101,7 @@ private:
     int get_next_empty_user_index() {
         int index = 0;
         for (int i = 0; i < MAX_USER_CONNECTIONS; i++) {
-            if (userList->get_user_is_active() == false) {
+            if (userList[i].get_user_is_active() == false) {
                 return i;
             }
         }

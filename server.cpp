@@ -27,11 +27,15 @@
 using namespace std;
 
 User_Manager users[MAX_USERS_CONNECTED];
-
+struct thread_data {
+	int sockID;
+};
 
 void *handle_connection(void *sock_arg) {
-    int sockID = (int) sock_arg;
-    cout<<"thread in!"<<endl;
+    struct thread_data *my_data;
+    my_data = (struct thread_data *) sock_arg;
+    int sockID = my_data->sockID;
+    cout<<"thread in!"<< sockID << endl;
     if (sockID < 0) {
         Mensaje error_connect = new Mensaje(1);
         error_connect.error_connection_json(1, "no se puedo conectar al servidor");
@@ -114,11 +118,12 @@ int main(int argc, char *argv[]) {
 		int user_stack_id = users->add_user(new_username, 1, 1, accepted);
 		cout << user_stack_id << endl;
 		if (user_stack_id != -1) {
-		 pthread_t thr;
-		int socki = users->get_user_socket(user_stack_id);
-		cout << "Cliente socket: " << socki<< endl;
-		pthread_create(&thr, NULL, handle_connection, (void *) &socki);   
-		    
+			pthread_t thr;
+			struct thread_data td;
+			td.sockID = users->get_user_socket(user_stack_id);
+			cout << "Cliente socket: " << users->get_user_socket(user_stack_id)<< endl;
+			pthread_create(&thr, NULL, handle_connection, (void *) &td); 
+ 	    
 		}
 		
 	}
