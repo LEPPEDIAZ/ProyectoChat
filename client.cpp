@@ -48,7 +48,7 @@ void *SendThread(void *threadarg){
 
 		if (data == "close") {
 		  
-		    send(clientSd, (char *) &msg, strlen(msg), 0);
+		    send(clientSd, "3312wazos", strlen("3312wazos"), 0);
 		    break;
 		}
 		send(clientSd, (char *) &msg, strlen(msg), 0);
@@ -69,8 +69,8 @@ void *ReadThread(void *threadarg){
 	while(1){
 		string mensaje = recibir_mensaje(clientSd);
 		if (mensaje != "3312wazo") {
-		    printf("\nhay un mensaje en cola!\n");
-		    cout << "Mensajes: " << mensaje << endl;
+		    cout << "\n\nEl servidor ha respondido"<< endl;
+		    cout << "Mensajes: " << mensaje << "\n" << endl;
 		    cout << ">";
 		    cout.flush();
 
