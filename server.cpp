@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
         int user_stack_id = users->add_user(new_username,1,curr_time,accepted);
 
         if(user_stack_id != -1){
-            if (pthread_create(users->get_user_socket(user_stack_id), NULL, &handle_connection, (void *) accepted) != 0) {
+            if (pthread_create(users->get_user_socket(user_stack_id), NULL, handle_connection, (void *) accepted) != 0) {
                 perror("create thread");
                 exit(EXIT_FAILURE);
             }
@@ -103,7 +103,8 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-void handle_connection(int sockID) {
+void *handle_connection(void * sock_arg) {
+    int sockID = (int) sock_arg;
 
     if (sockID < 0) {
         Mensaje error_connect = new Mensaje(1);
