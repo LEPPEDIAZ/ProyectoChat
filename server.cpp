@@ -47,13 +47,23 @@ void *handle_connection(void *sock_arg) {
     while (1) {
         string mensaje = recibir_mensaje(sockID);
         if (mensaje != "3312wazo") {
-            printf("hay un mensaje en cola!\n");
-            cout << "Mensajes: " << mensaje << "\n" << endl;
+            cout << "Request: " << mensaje << "\n" << endl;
             auto mensaje_parseado = json::parse(mensaje);
             int code = mensaje_parseado["code"];
-            cout << "codigo fue: " << code << endl;
-            cout << "-----";
+            switch (code) {
+                case 1:
+                case 4:
+                    string mensaje = mensaje_parseado["data"]["mensaje"];
+                    vector<int> targets = mensaje_parseado["data"]["to"];
 
+                    for (auto it = targets.begin(); it != targets.end(); it++) {
+                        Mensaje user_message = new Mensaje(201);
+                        user_message.send_message_json(it,targets,mensaje,"");
+                        enviar_mensaje(user_message.to_string(),users->get_user_socket(it));
+//                        write(user->fd, msg.c_str(), msg.length());
+                    }
+                    break;
+            }
             //send(sockID, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
         }
     }
@@ -92,7 +102,7 @@ int main(int argc, char *argv[]) {
         cerr << "Error " << endl;
         exit(0);
     }
-    cout << "Esperando que el cliente se conecte..." << endl;
+    cout << "Esperando conexiones..." << endl;
 
     listen(sockSd, MAX_USERS_CONNECTED);
 
@@ -104,9 +114,8 @@ int main(int argc, char *argv[]) {
 //    int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
     int accepted;
     while ((accepted = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize)) > 0) {
-        cout << "Nuevo usuario conectado!" << endl;
+        cout << "Nueva solicitud de conexion de usuario" << endl;
         string mensaje = recibir_mensaje(accepted);
-        cout << mensaje << endl;
         auto mensaje_parseado = json::parse(mensaje);
         int code = mensaje_parseado["code"];
         if (code == 0) {
@@ -119,13 +128,9 @@ int main(int argc, char *argv[]) {
                 pthread_t thr;
                 struct thread_data td;
                 td.sockID = users->get_user_socket(user_stack_id);
-                cout << "Cliente socket: " << users->get_user_socket(user_stack_id) << endl;
                 pthread_create(&thr, NULL, handle_connection, (void *) &td);
-
             }
-
         }
-        /*Create the thread and pass the socket descriptor*/
     }
 
 
