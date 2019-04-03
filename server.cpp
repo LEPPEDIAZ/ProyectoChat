@@ -31,7 +31,7 @@ User_Manager users[MAX_USERS_CONNECTED];
 
 void *handle_connection(void *sock_arg) {
     int sockID = (int) sock_arg;
-
+    count<<"thread in!"<<endl;
     if (sockID < 0) {
         Mensaje error_connect = new Mensaje(1);
         error_connect.error_connection_json(1, "no se puedo conectar al servidor");
@@ -101,8 +101,9 @@ int main(int argc, char *argv[]) {
     int newSd = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize);
     int accepted;
     while ((accepted = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize)) > 0) {
+        cout<<"mensaje recibido!"<<endl;
         string mensaje = recibir_mensaje(accepted);
-
+        cout<<mensaje<<endl;
         auto mensaje_parseado = json::parse(mensaje);
         string new_username = mensaje_parseado["date"]["username"];
         unsigned long int curr_time = time(NULL);
