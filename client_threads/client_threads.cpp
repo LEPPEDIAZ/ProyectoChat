@@ -52,7 +52,13 @@ void *ReadThreadBroadcasting(void *threadarg){
 		string mensaje = recibir_mensaje(clientSd);
 		if (mensaje != "3312wazo") {
 		    cout << "\r" << flush;
-		    cout << "Mensajes: " << mensaje << endl;
+		    auto mensaje_parseado = json::parse(mensaje);
+		    int code = mensaje_parseado["code"];
+		    if(code ==201){
+		        string username = mensaje_parseado["data"]["from"];
+		        string message = mensaje_parseado["data"]["message"];
+		        std::cout << username << ": " << message << endl;
+		    }
 		    cout << ">";
 		    cout.flush();
 
@@ -104,5 +110,32 @@ void *SendThreadStatus(void *threadarg){
 }
 
 
+/*-------------------------------
+	  LISTA USUARIOS
+--------------------------------*/
+void *ReadThreadUsersList(void *threadarg){
+	struct thread_data *my_data;
+	my_data = (struct thread_data *) threadarg;
+	int clientSd = my_data->clientSd;
 
+	while(1){
+		string mensaje = recibir_mensaje(clientSd);
+		if (mensaje != "3312wazo") {
+		    auto mensaje_parseado = json::parse(mensaje);
+		    int code = mensaje_parseado["code"];
+		    if(code ==203){
+		        vector<int> users = mensaje_parseado["data"]["users"];
+		        cout << "Lista recibida" << endl;
+			cout << ">" << flush;
+			
+			string option;
+			getline(cin, option);
+			break;
+		    }
+
+        	}
+		
+	}
+	return (void*) "hey";
+}
 

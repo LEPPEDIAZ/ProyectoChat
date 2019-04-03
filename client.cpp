@@ -135,6 +135,27 @@ int main(int argc, char *argv[]) {
 		void *returnSend;
 		pthread_join(threadSend, &returnSend);
 	}
+
+	if(option == "4"){
+		vector<int> List;
+		List.push_back(1);
+
+		Mensaje getUsers = new Mensaje(1);
+		getUsers.get_user_json(3, List);
+		strcpy(msg, getUsers.to_string().c_str());
+
+		send(clientSd, (char *) &msg, strlen(msg), 0);
+
+		// READ THREAD
+		pthread_t threadRead;
+		struct thread_data tr;
+		int rc;
+		tr.clientSd = clientSd;
+		rc = pthread_create(&threadRead, NULL, ReadThreadUsersList, (void *)&tr);
+
+		void *returnSend;
+		pthread_join(threadRead, &returnSend);
+	}
 	
 	if(option == "7"){
 		inMenu = false;
