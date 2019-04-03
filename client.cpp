@@ -142,9 +142,12 @@ int main(int argc, char *argv[]) {
 	if(option == "4"){
 		vector<int> List;
 		List.push_back(1);
-
 		Mensaje getUsers = new Mensaje(1);
 		getUsers.get_user_json(3, List);
+		std::cout << getUsers.to_string() << endl;
+		
+		respuesta.build_connection_success_json(0, username, 1, "7 de la noche");
+		std::cout << respuesta.to_string() << endl;
 		strcpy(msg, getUsers.to_string().c_str());
 
 		send(clientSd, (char *) &msg, strlen(msg), 0);
