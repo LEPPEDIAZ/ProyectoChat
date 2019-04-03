@@ -52,13 +52,14 @@ void *ReadThreadBroadcasting(void *threadarg){
 		string mensaje = recibir_mensaje(clientSd);
 		if (mensaje != "3312wazo") {
 		    cout << "\r" << flush;
-		    auto mensaje_parseado = json::parse(mensaje);
+		    /*auto mensaje_parseado = json::parse(mensaje);
 		    int code = mensaje_parseado["code"];
 		    if(code ==201){
 		        string username = mensaje_parseado["data"]["from"];
 		        string message = mensaje_parseado["data"]["message"];
 		        std::cout << username << ": " << message << endl;
-		    }
+		    }*/
+		    cout << mensaje << endl;
 		    cout << ">";
 		    cout.flush();
 
