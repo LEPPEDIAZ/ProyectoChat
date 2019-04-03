@@ -121,6 +121,21 @@ int main(int argc, char *argv[]) {
 		pthread_cancel(threadRead);
 	}
 	
+	if(option == "3"){
+		cout << "Cambiar status" << endl;
+		/*----------THREADS---------*/
+		// SEND THREAD
+		pthread_t threadSend;
+		struct thread_data ts;
+		int rs;
+		ts.clientSd = clientSd;
+		ts.user_id = 1;
+		rs = pthread_create(&threadSend, NULL, SendThreadStatus, (void *)&ts);
+		
+		void *returnSend;
+		pthread_join(threadSend, &returnSend);
+	}
+	
 	if(option == "7"){
 		inMenu = false;
 	}
