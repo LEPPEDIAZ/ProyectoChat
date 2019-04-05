@@ -204,6 +204,14 @@ public:
     string get_username_by_index(int index){
         return userList[index].get_username();
     }
+
+    int get_user_status_by_index(int index){
+        return userList[index].get_user_status();
+    }
+
+    int get_user_last_connected_by_index(int index){
+        return userList[index].get_last_connected();
+    }
 };
 
 

@@ -63,6 +63,26 @@ void *handle_connection(void *sock_arg) {
                         enviar_mensaje(user_message.to_string(), users->get_user_socket(*it));
                     }
                     break;
+                case 3:
+                    auto requested_users = mensaje_parseado["data"]["user"];
+                    json response;
+                    response["code"] = 203;
+                    vector<string> users_list;
+
+                    for (auto user = requested_users.begin(); user != requested_users.end(); user++){
+                        json user_json;
+                        user_json['id'] = user;
+                        user_json['username'] = users->get_username_by_index(user);
+                        user_json['status'] = users->get_user_status_by_index(user);
+                        user_json['last_connected'] = users->get_user_last_connected_by_index(user);
+
+                        users_list.push_back(user_json.dump());
+                    }
+                    response["data"]["user"] = users_list;
+
+                    enviar_mensaje(response.dump(),sockID);
+
+                    break;
 //status change
                 case 4:
                     auto new_user_status = mensaje_parseado["data"]["new_status"];
@@ -134,6 +154,7 @@ int main(int argc, char *argv[]) {
     int accepted;
     while ((accepted = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize)) > 0) {
         cout << "Nueva solicitud de conexion de usuario" << endl;
+        cout<< "user allocd in:"<<accepted<<endl;
         string mensaje = recibir_mensaje(accepted);
         auto mensaje_parseado = json::parse(mensaje);
         int code = mensaje_parseado["code"];
