@@ -84,7 +84,6 @@ void *handle_connection(void *sock_arg) {
                         enviar_mensaje(response.dump(),sockID);
 
                         break;
-//status change
                     case 4:
                         auto new_user_status = mensaje_parseado["data"]["new_status"];
                         auto user_index = mensaje_parseado["user"]["message"];
