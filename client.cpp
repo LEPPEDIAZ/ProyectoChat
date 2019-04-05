@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
 
 		send(clientSd, (char *) &msg, strlen(msg), 0);
 		while (1) {
-			string mensaje = recibir_mensaje(sockID);
+			string mensaje = recibir_mensaje(clientSd);
 			if (mensaje != "3312wazo") {
 				cout << "Response: " << mensaje << "\n" << endl;
 				break;

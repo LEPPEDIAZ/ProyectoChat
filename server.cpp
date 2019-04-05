@@ -71,10 +71,10 @@ void *handle_connection(void *sock_arg) {
 
                     for (auto user = requested_users.begin(); user != requested_users.end(); user++){
                         json user_json;
-                        user_json['id'] = user;
-                        user_json['username'] = users->get_username_by_index(user);
-                        user_json['status'] = users->get_user_status_by_index(user);
-                        user_json['last_connected'] = users->get_user_last_connected_by_index(user);
+                        user_json['id'] =* user;
+                        user_json['username'] = users->get_username_by_index(*user);
+                        user_json['status'] = users->get_user_status_by_index(*user);
+                        user_json['last_connected'] = users->get_user_last_connected_by_index(*user);
 
                         users_list.push_back(user_json.dump());
                     }
