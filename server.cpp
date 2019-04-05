@@ -48,7 +48,7 @@ void *handle_connection(void *sock_arg) {
         string mensaje = recibir_mensaje(sockID);
         if (mensaje != "3312wazo") {
             cout << "Request: " << mensaje << "\n" << endl;
-            if(mensaje!=""){
+            if (mensaje != "") {
                 auto mensaje_parseado = json::parse(mensaje);
                 int code = mensaje_parseado["code"];
                 switch (code) {
@@ -60,7 +60,7 @@ void *handle_connection(void *sock_arg) {
 
                         for (auto it = targets.begin(); it != targets.end(); it++) {
                             Mensaje user_message = new Mensaje(201);
-                            user_message.send_message_success_json(users->get_username_by_index(*it),mensaje);
+                            user_message.send_message_success_json(users->get_username_by_index(*it), mensaje);
                             enviar_mensaje(user_message.to_string(), users->get_user_socket(*it));
                         }
                         break;
@@ -68,9 +68,9 @@ void *handle_connection(void *sock_arg) {
                         auto requested_users = mensaje_parseado["data"]["user"];
                         json response;
                         response["code"] = 203;
-                        vector<string> users_list;
+                        vector <string> users_list;
 
-                        for (auto user = requested_users.begin(); user != requested_users.end(); user++){
+                        for (auto user = requested_users.begin(); user != requested_users.end(); user++) {
                             json user_json;
                             user_json['id'] = *user;
                             user_json['username'] = users->get_username_by_index(*user);
@@ -81,7 +81,7 @@ void *handle_connection(void *sock_arg) {
                         }
                         response["data"]["user"] = users_list;
 
-                        enviar_mensaje(response.dump(),sockID);
+                        enviar_mensaje(response.dump(), sockID);
 
                         break;
                     case 4:
@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
     int accepted;
     while ((accepted = accept(sockSd, (struct sockaddr *) &newSockAddr, &newSockAddrSize)) > 0) {
         cout << "Nueva solicitud de conexion de usuario" << endl;
-        cout<< "user allocd in:"<<accepted<<endl;
+        cout << "user allocd in:" << accepted << endl;
         string mensaje = recibir_mensaje(accepted);
         auto mensaje_parseado = json::parse(mensaje);
         int code = mensaje_parseado["code"];
