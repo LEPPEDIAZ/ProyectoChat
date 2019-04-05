@@ -104,6 +104,7 @@ void *handle_connection(void *sock_arg) {
 
                 }
             }
+            break;
 
             //send(sockID, "Mensaje recibido!", strlen("Mensaje recibido!"), 0);
         }
